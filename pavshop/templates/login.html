@@ -40,19 +40,27 @@
               <!-- ESTIMATE SHIPPING & TAX -->
               <div class="col-sm-7">
                 <h6>LOGIN YOUR ACCOUNT</h6>
-                <form>
+                <form method="POST">
+                  
+                  {% csrf_token %}
+                  
+                  {% include 'messages.html' %}
                   <ul class="row">
                     
                     <!-- Name -->
                     <li class="col-md-12">
                       <label> USERNAME
-                        <input type="text" name="first-name" value="" placeholder="">
+                        <!-- <input type="text" name="first-name" value="" placeholder="Username"> -->
+                        {{ form.username }}
+                        
                       </label>
                     </li>
                     <!-- LAST NAME -->
                     <li class="col-md-12">
                       <label> PASSWORD
-                        <input type="password" name="last-name" value="" placeholder="">
+                        <!-- <input type="password" name="last-name" value="" placeholder="Password"> -->
+                        {{ form.password }}
+                        
                       </label>
                     </li>
                     
@@ -72,7 +80,7 @@
                     <!-- FORGET PASS -->
                     <li class="col-md-4">
                       <div class="checkbox margin-0 margin-top-20 text-right">
-                        <a href="#.">Forget Password</a>
+                        <a href="{% url 'password_reset' %}">Forget Password</a>
                       </div>
                     </li>
                   </ul>
@@ -86,17 +94,17 @@
                 
                 <ul class="login-with">
                 	<li>
-                    	<a href="#."><i class="fa fa-facebook"></i>FACEBOOK</a>
+                    	<a href="{% url 'social:begin' 'facebook' %}"><i class="fa fa-facebook"></i>FACEBOOK</a>
                     
                     </li>
                     
                     <li>
-                    	<a href="#."><i class="fa fa-google"></i>GOOGLE</a>
+                    	<a href="{% url 'social:begin' 'google-oauth2' %}"><i class="fa fa-google"></i>GOOGLE</a>
                     
                     </li>
                     
                     <li>
-                    	<a href="#."><i class="fa fa-twitter"></i>TWITTER</a>
+                    	<a href="{% url 'social:begin' 'twitter' %}"><i class="fa fa-twitter"></i>TWITTER</a>
                     
                     </li>
                 

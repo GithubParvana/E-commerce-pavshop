@@ -1,0 +1,266 @@
+from django.conf import settings
+from django.shortcuts import render
+import requests
+from django.db.models import Count
+# from django.db.models import Q
+
+from .models import *
+
+
+# query = urllib.parse.quote_plus(request)
+# Create your views here.
+def product_list_page(request):
+    colors = Color.objects.all()
+    brands = Brand.objects.all()
+    cat = Category.objects.all()
+    tag = Tags.objects.all()
+    products = Product.objects.all()
+    values = Product.objects.values()
+    print('values', values)
+    # list_ = []
+    # print(Product.objects.all().values())
+    
+
+    min_price = request.GET.get('min')
+    max_price = request.GET.get('max')
+
+    color = request.GET.get('color')
+    brand = request.GET.get('brand')
+    category = request.GET.get('category')
+
+    name = request.GET.get('search')
+
+    # product_count = Category.count_cat()
+    # product_count = Product.count_product()
+    # print(product_count)
+    # product_count = Product.objects.annotate(category=Count(category))
+    # product_count = Product.objects.filter(category__name='Furniture').count()
+
+    # product_count = Product.objects.annotate(items_count=Count(''))
+    product_count = Category.objects.annotate(num_products=Count('products'))
+
+    for product in product_count:
+        print(product.name, product.num_products)
+
+    # counts = Product.objects.all()
+    # counts = Product.objects.filter(category__name=category).all().count()
+
+    # query = urllib.parse.quote_plus('category')
+    # print(min_price, max_price)
+    # product_images = ProductImages.objects.all()
+
+
+    if min_price and max_price:
+        # products = Product.objects.filter(price__gte=min_price, price__lte=max_price)
+        products = Product.objects.filter(price__gte=min_price) & Product.objects.filter(price__lte=max_price)
+        print('If -deki body', products)
+        print()
+
+    if color:
+        products = Product.objects.filter(color__name=color).all()
+
+    if brand:
+        products = Product.objects.filter(brand__name=brand).all()
+        
+
+    if category:
+        products = Product.objects.filter(category__name__icontains=category).all()
+        # counts = Product.objects.filter(category__name=category).all().count()
+        # print(counts)
+        print("category'ler burda: ", category)
+
+
+    if name:
+        print(name)
+        products = Product.objects.filter(title__icontains=name).all()
+        print(products, 'yyyyyyyyyyyyyyyyyyyyyyyyyyyyy')
+    # if values:
+    #     products = Product.objects.filter(category__name__icontains=title).all().count()
+    #     for i in products.values():
+    #         list_.append(i['category_id'])
+    #     print(list_.count(i['category_id']))
+
+
+
+    # if values:
+    #     products = Product.objects.filter(id__in=Category.objects.values()[0]['id']).all().count()
+    #     print('count', products)
+
+    # if counts:
+    #     counts_ = Product.objects.filter(category__name=category).all().count()
+    
+
+    context = {
+        'colors':colors,
+        'brands':brands,
+        'cat':cat,
+        'tag':tag,
+        'products':products,
+        'min_price':min_price,
+        'max_price':max_price,
+        'color':color,
+        'brand':brand,
+        'category':category,
+        'values':values,
+        'product_count':product_count,
+        'name':name,
+        # 'list_':list_,
+        # 'counts':counts,
+        # 'counts_':counts_,
+        # 'product_images':product_images,
+    }   
+
+
+
+    print(colors)
+    print()
+    print(context)
+    print()
+    print(type(colors))
+    print()
+    print(colors.values())
+    print()
+    print(brands)
+    print()
+    print(brands.values())
+    print()
+    print(cat)
+    print()
+    print(cat.values())
+    print()
+    print(tag)
+    print()
+    print(tag.values())
+    print()
+    print(products)
+    print()
+    print(products.values())
+    print()
+    
+    # print(product_images)
+    # print()
+    # print(product_images.values())
+
+    for i in colors.values():
+        print(i)
+
+    print()
+
+    for i in brands.values():
+        print(i)
+    
+    print()
+
+    for i in cat.values():
+        print(i)
+    
+    print()
+
+    for i in tag.values():
+        print(i)
+    print()
+
+    for i in products.values():
+        print(i)
+    print()
+    
+
+    list_ = []
+    for i in products.values():
+        print(i['title'], ' ', i['category_id'])
+        list_.append(i['category_id'])
+
+    # print(list_)
+    # print(list_.count(i['category_id']))
+
+    # for i in product_images.values():
+    #     print(i)
+
+    return render(request, 'product-list.html', context=context)
+
+
+
+
+
+# Create your views here.
+def product_detail_page(request, id):
+    # brands = ProductVariant.objects.all()
+    all_products = Product.objects.all()[:4]
+    categorys = Category.objects.all()
+    products = Product.objects.filter(id=id).first()
+    images = ProductImages.objects.filter(product__id=id).all()
+    variants = ProductVariant.objects.filter(product__id=id).all()
+    brands = ProductVariant.objects.filter(product__id=id).first()
+    product = Product.objects.get(id=id)
+    # categorys_ = Product.objects.filter(product__id=id).first()
+    # brands_ = Product.objects.filter(product__id=id).all()
+    # colors = ProductVariant.objects.all()   
+    
+    
+
+    context = {
+        'all_products':all_products,
+        'categorys':categorys,
+        'images':images,
+        'variants':variants,
+        'brands':brands,
+        'product':product,
+        'products':products,
+        # 'categorys_':categorys_,
+        # 'brands_':brands_,
+        
+    }
+    
+    print()
+    # print(images)
+    # print()
+    print(variants)
+    # print()
+    # print(brands)
+    # print()
+    print(categorys)
+    # print()
+    # print(colors)
+    # print(categorys_)
+    print()
+    # print(brands_)
+
+
+    print()
+    print("Product Images")
+    for i in images.values():
+        print(i)
+    print()
+    
+    # for i in brands_:
+    #     print(i)
+
+    # print("Product Variants")
+    # for i in variants:
+    #     print(i)
+    #     print(i.brand.name)
+    # print()
+
+    # print("Brands")
+    # for i in brands.values():
+    #     print(i)
+    # print()
+    
+    # print("Categorys")
+    # for i in categorys:
+    #     print(i.name)
+    #     # print(i.name)
+    # print()
+    
+    # print("Product -> category'ye catmaq ucun:")
+    # for i in categorys_:
+    #     print(i.category.name)
+
+    
+    return render(request, 'product-detail.html', context=context)
+
+
+# Create your views here.
+# def index_page(request):
+#     return render(request, 'index.html')
+

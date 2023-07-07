@@ -14,21 +14,68 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
+from django.conf import settings
+from django.conf.urls.static import static
+from django.conf.urls.i18n import i18n_patterns
+
+
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+
+schema_view = get_schema_view(
+   openapi.Info(
+      title="Snippets API",
+      default_version='v1',
+      description="Test description",
+      terms_of_service="https://www.google.com/policies/terms/",
+      contact=openapi.Contact(email="contact@snippets.local"),
+      license=openapi.License(name="BSD License"),
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
+
+
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+
 
 
 urlpatterns = [
-    path('', include('base.urls')),
-    path('', include('checkout.urls')),
-    path('', include('index.urls')),
-    path('', include('contact.urls')),
-    path('', include('blog_list.urls')),
-    path('', include('blog_detail.urls')),
-    path('about_us/', include('about_us.urls')),
-    path('', include('authentication.urls')),
-    path('', include('authentication.urls')),    # start from root or you can define some url name like others
-    path('shopping_cart/', include('shop_cart.urls')),
-    path('product_detail/', include('details.urls')),
-    path('product_list/', include('product_list.urls')),
-    # path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
+    path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    path('api-documentation/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    # Optional UI:
+    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    # path('', include('authentication.urls')),    # start from root or you can define some url name like others
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+    # path('api/', include('blogs.api.urls')),
+    # path('api/', include('products.api.urls')),
+    path('api/', include('blogs.apis.urls')),
+    path('api/', include('products.apis.urls')),
+    path('api/', include('base.api.urls')),
+    path('api/', include('shopping_cart.api.urls')),
+    path('auth/', include('authentication.api.urls')),
+
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+urlpatterns += i18n_patterns(
+    re_path(r'^rosetta/', include('rosetta.urls')),
+    path('i18n/', include('django.conf.urls.i18n')),
+    path('i18n/', include('django_translation_flags.urls')),
+    path('', include('base.urls')),
+    path('', include('shopping_cart.urls')),
+    path('', include('products.urls')),
+    path('', include('blogs.urls')),
+    path('', include('authentication.urls')),
+
+)

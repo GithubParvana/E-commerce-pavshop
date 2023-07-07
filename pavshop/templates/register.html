@@ -3,6 +3,8 @@
 
 {% load static %}
 
+{% load i18n %}
+
 {% block content %}
 
 <title>{% block title %}PAVSHOP - Register Page{% endblock %}</title>
@@ -13,7 +15,7 @@
   <section class="sub-bnr" data-stellar-background-ratio="0.5">
     <div class="position-center-center">
       <div class="container">
-        <h4>REGISTER</h4>
+        <h4>{% trans 'REGISTER' %}</h4>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec faucibus maximus vehicula. 
           Sed feugiat, tellus vel tristique posuere, diam</p>
         <ol class="breadcrumb">
@@ -41,64 +43,91 @@
               
               <!-- ESTIMATE SHIPPING & TAX -->
               <div class="col-sm-12">
-                <h6>REGISTER</h6>
-                <form>
+                <h6>{% trans 'REGISTER' %}</h6>
+
+                <form method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  {% for error in form.non_field_errors %}
+                      {% if error %}
+                          <p class="alert alert-danger">{{ error }}</p>
+                      <!-- {% else %}
+
+                       {% include 'success_page.html' %} -->
+                      {% endif %}
+                  {% endfor %}
+                  
+                  
                   <ul class="row">
                     
                     <!-- Name -->
                     <li class="col-md-6">
                       <label> *FIRST NAME
-                        <input type="text" name="first-name" value="" placeholder="">
+                        <!-- <input type="text" name="first-name" value="" placeholder=""> -->
+                        {{ form.first_name }}
+                        {{ form.first_name.errors }}
                       </label>
                     </li>
                     <!-- LAST NAME -->
                     <li class="col-md-6">
                       <label> *LAST NAME
-                        <input type="text" name="last-name" value="" placeholder="">
+                        <!-- <input type="text" name="last-name" value="" placeholder=""> -->
+                        {{ form.last_name }}
+                        {{ form.last_name.errors }}
                       </label>
                     </li>
-                    
+                    <!-- USERNAME -->
+                    <li class="col-md-6">
+                      <label> *USERNAME
+                        <!-- <input type="text" name="last-name" value="" placeholder=""> -->
+                        {{ form.username }}
+                        {{ form.username.errors }}
+                      </label>
+                    </li>
                     <!-- EMAIL ADDRESS -->
                     <li class="col-md-6">
                       <label> *EMAIL ADDRESS
-                        <input type="text" name="contry-state" value="" placeholder="">
+                        <!-- <input type="email" name="email" value="" placeholder=""> -->
+                        {{ form.email }}
+                        {{ form.email.errors }}
                       </label>
                     </li>
                     <!-- PHONE -->
-                    <li class="col-md-6">
+                    <!-- <li class="col-md-6">
                       <label> *PHONE
                         <input type="text" name="postal-code" value="" placeholder="">
                       </label>
+                    </li> -->
+                    
+                    <!-- LAST NAME -->
+                    <li class="col-md-6">
+                      <label> *PASSWORD
+                        <!-- <input type="password" name="password" value="" placeholder="Password"> -->
+                        {{ form.password }}
+                        {{ form.password.errors }}
+                      </label>
                     </li>
                     
                     <!-- LAST NAME -->
                     <li class="col-md-6">
                       <label> *PASSWORD
-                        <input type="password" name="last-name" value="" placeholder="">
+                        <!-- <input type="password" name="password" value="" placeholder="Confirm Password"> -->
+                        {{ form.confirm_password }}
+                        {{ form.confirm_password.errors }}
                       </label>
                     </li>
-                    
-                    <!-- LAST NAME -->
-                    <li class="col-md-6">
-                      <label> *PASSWORD
-                        <input type="password" name="last-name" value="" placeholder="">
-                      </label>
-                    </li>
-                    <li class="col-md-6"> 
-                      <!-- ADDRESS -->
+                    <!-- <li class="col-md-6"> 
                       <label>*ADDRESS
                         <input type="text" name="address" value="" placeholder="">
                       </label>
                     </li>
                     <li class="col-md-6"> 
-                      <!-- ADDRESS -->
                       <label>*ADDRESS
                         <input type="text" name="address" value="" placeholder="">
                       </label>
-                    </li>
+                    </li> -->
                     
                     <!-- COUNTRY -->
-                    <li class="col-md-6">
+                    <!-- <li class="col-md-6">
                       <label> COUNTRY
                         <select class="selectpicker" name="contry-state">
                           <option>COUNTRY</option>
@@ -106,19 +135,31 @@
                           <option>Country 3</option>
                         </select>
                       </label>
-                    </li>
+                    </li> -->
                     
                     <!-- TOWN/CITY -->
-                    <li class="col-md-6">
+                    <!-- <li class="col-md-6">
                       <label>*TOWN/CITY
                         <input type="text" name="town" value="" placeholder="">
                       </label>
-                    </li>
+                    </li> -->
                     
+                  
+
+                    <!--  Profile Photo  -->
+                    <li class="col-md-6">
+                      <label> *PHOTO
+                        <!-- <input type="file" name="image" value="" placeholder=""> -->
+                        {{ form.image }}
+                        {{ form.image.errors }}
+                      </label>
+                    </li>
+
                     <!-- PHONE -->
                     <li class="col-md-6">
-                      <button type="submit" class="btn">REGISTER NOW</button>
+                      <button type="submit" class="btn">{% trans 'REGISTER NOW' %}</button>
                     </li>
+
                   </ul>
                 </form>
               </div>
@@ -136,7 +177,7 @@
         
         <!-- Main Heading -->
         <div class="heading text-center">
-          <h4>about PAVSHOP</h4>
+          <h4>{% trans 'about PAVSHOP' %}</h4>
           <p>Phasellus lacinia fermentum bibendum. Interdum et malesuada fames ac ante ipsumien lacus, eu posuere odio luctus non. Nulla lacinia,
             eros vel fermentum consectetur, risus purus tempc, et iaculis odio dolor in ex. </p>
         </div>

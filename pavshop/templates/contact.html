@@ -3,6 +3,8 @@
 
 {% load static %}
 
+{% load i18n %}
+
 {% block content %}
 
 <title>{% block title %}PAVSHOP - Contact Page{% endblock %}</title>
@@ -16,8 +18,8 @@
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec faucibus maximus vehicula. 
           Sed feugiat, tellus vel tristique posuere, diam</p>
         <ol class="breadcrumb">
-          <li><a href="#">Home</a></li>
-          <li class="active">contact</li>
+          <li><a href="#">{% trans 'Home' %}</a></li>
+          <li class="active">{% trans 'contact' %}</li>
         </ol>
       </div>
     </div>
@@ -30,52 +32,64 @@
     <section class="contact padding-top-100 padding-bottom-100">
       <div class="container">
         <div class="contact-form">
-          <h5>PLEASE fill-up FEW details</h5>
+          <h5>{% trans 'PLEASE fill-up FEW details' %}</h5>
           <div class="row">
             <div class="col-md-8"> 
               
               <!--======= Success Msg =========-->
-              <div id="contact_message" class="success-msg"> <i class="fa fa-paper-plane-o"></i>Thank You. Your Message has been Submitted</div>
+              <div id="contact_message" class="success-msg"> <i class="fa fa-paper-plane-o"></i>{% trans 'Thank You. Your Message has been Submitted' %}</div>
               
               <!--======= FORM  =========-->
-              <form role="form" id="contact_form" class="contact-form" method="post" onSubmit="return false">
+              <!--   onSubmit="return false"   -> olanda form tag'da submit button islemir  -->
+              <form role="form" id="contact_form" class="contact-form" method="post" action="{% url 'contact_page' %}">
+                {% include 'messages.html' %}
+                {% csrf_token %}
                 <ul class="row">
                   <li class="col-sm-6">
-                    <label>full name *
-                      <input type="text" class="form-control" name="name" id="name" placeholder="">
+                    <label>{% trans 'full name' %} *
+                      <!-- <input type="text" class="form-control" name="name" id="name" placeholder=""> -->
+                      {{ form.full_name }}
                     </label>
                   </li>
                   <li class="col-sm-6">
-                    <label>Email *
-                      <input type="text" class="form-control" name="email" id="email" placeholder="">
+                    <label>{% trans 'Email' %} *
+                      <!-- <input type="email" class="form-control" name="email" id="email" placeholder=""> -->
+                      {{ form.email }}
+                      {{ form.email.errors }}
                     </label>
                   </li>
                   <li class="col-sm-6">
-                    <label>Phone *
-                      <input type="text" class="form-control" name="company" id="company" placeholder="">
+                    <label>{% trans 'Phone' %} *
+                      <!-- <input type="text" class="form-control" name="company" id="company" placeholder=""> -->
+                      <!-- <input type="tel" class="form-control" name="phone" id="phone" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required> -->
+                      {{ form.phone }}
+                      {{ form.phone.errors }}
                     </label>
                   </li>
                   <li class="col-sm-6">
-                    <label>SUBJECT
-                      <input type="text" class="form-control" name="website" id="website" placeholder="">
+                    <label>{% trans 'SUBJECT' %}
+                      <!-- <input type="text" class="form-control" name="website" id="website" placeholder=""> -->
+                      {{ form.subject }}
                     </label>
                   </li>
                   <li class="col-sm-12">
-                    <label>Message
-                      <textarea class="form-control" name="message" id="message" rows="5" placeholder=""></textarea>
+                    <label>{% trans 'Message' %}
+                      <!-- <textarea class="form-control" name="message" id="message" rows="5" placeholder=""></textarea> -->
+                      {{ form.message }}
                     </label>
                   </li>
                   <li class="col-sm-12">
-                    <button type="submit" value="submit" class="btn" id="btn_submit" onClick="proceed();">SEND MAIL</button>
+                    <button type="submit" value="submit" class="btn" id="btn_submit" onClick="proceed();">{% trans 'SEND MAIL' %}</button>
                   </li>
                 </ul>
               </form>
+
             </div>
             
             <!--======= ADDRESS INFO  =========-->
             <div class="col-md-4">
               <div class="contact-info">
-                <h6>OUR ADDRESS</h6>
+                <h6>{% trans 'OUR ADDRESS' %}</h6>
                 <ul>
                   <li> <i class="icon-map-pin"></i> Street No. 12, Newyork 12,<br>
                     MD - 123, USA.</li>
@@ -101,7 +115,7 @@
         
         <!-- Main Heading -->
         <div class="heading text-center">
-          <h4>about PAVSHOP</h4>
+          <h4>{% trans 'about PAVSHOP' %}</h4>
           <p>Phasellus lacinia fermentum bibendum. Interdum et malesuada fames ac ante ipsumien lacus, eu posuere odio luctus non. Nulla lacinia,
             eros vel fermentum consectetur, risus purus tempc, et iaculis odio dolor in ex. </p>
         </div>
@@ -116,6 +130,7 @@
         </ul>
       </div>
     </section>
+  </div>
     
 
 

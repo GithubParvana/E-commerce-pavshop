@@ -1219,6 +1219,7 @@ header .is-sticky .sticky .user-basket .dropdown-menu {
 .arrival-block .item {
 	position: relative;
 	width: 25%;
+	height: 450px;
 	float: left;
 	overflow: hidden;
 	border-right: 1px solid #d1d5db;
@@ -1279,6 +1280,7 @@ header .is-sticky .sticky .user-basket .dropdown-menu {
 }
 .arrival-block .item img {
 	width: 100%;
+	height: 100%;
 	margin-top: 0px;
 	top: 0px;
 	left: 0px;
@@ -1514,6 +1516,7 @@ header .is-sticky .sticky .user-basket .dropdown-menu {
 }
 .papular-block .item-img {
 	margin-bottom: 30px;
+	height: 210px;
 }
 .papular-block .overlay .inn {
 	display: inline-block;
@@ -1570,6 +1573,8 @@ header .is-sticky .sticky .user-basket .dropdown-menu {
 .papular-block .overlay a:hover {
 }
 .papular-block .item img {
+	height: 100%;
+
 	width: 100%;
 	margin-top: 0px;
 	top: 0px;
@@ -1631,7 +1636,8 @@ header .is-sticky .sticky .user-basket .dropdown-menu {
 	font-size: 12px;
 	font-weight: normal;
 }
-.shop-page .item {
+.shop-page .item{
+	height: 450px;
 	margin-bottom: 50px;
 	position: relative;
 }
@@ -1674,6 +1680,7 @@ header .is-sticky .sticky .user-basket .dropdown-menu {
 	text-align: right;
 }
 .shop-items .item .item-img {
+	height: 210px;
 	position: relative;
 	overflow: hidden;
 }
@@ -2221,7 +2228,13 @@ header .is-sticky .sticky .user-basket .dropdown-menu {
 }
 .blog-list img {
 	margin-bottom: 30px;
+
 }
+.admin-pic img{
+	object-fit: cover;
+	width: 100%;
+}
+
 .blog-list .post-tittle span {
 	color: #2d3a4b;
 	display: inline-block;

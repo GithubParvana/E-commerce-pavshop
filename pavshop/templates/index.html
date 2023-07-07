@@ -3,6 +3,8 @@
 {% load static %}
 
 
+{% load i18n %}
+
 {% block content %}
 
 <title>{% block title %}PAVSHOP - Index Page{% endblock %}</title>
@@ -83,7 +85,7 @@
                 data-endelementdelay="0.1" 
                 data-endspeed="300" 
                 data-scrolloffset="0"
-                style="z-index: 8;"><a href="#." class="btn">SHOP NOW</a> </div>
+                style="z-index: 8;"><a href="#." class="btn">{% trans 'SHOP NOW' %}</a> </div>
           </li>
           
           <!-- SLIDE  -->
@@ -154,7 +156,7 @@
                 data-endelementdelay="0.1" 
                 data-endspeed="300" 
                 data-scrolloffset="0"
-                style="z-index: 8;"><a href="#." class="btn">BUY NOW</a> </div>
+                style="z-index: 8;"><a href="#." class="btn">{% trans 'BUY NOW' %}</a> </div>
           </li>
         </ul>
       </div>
@@ -170,45 +172,39 @@
         
         <!-- Main Heading -->
         <div class="heading text-center">
-          <h4>new arrival</h4>
+          <h4>{% trans 'new arrival' %}</h4>
           <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec faucibus maximus vehicula. 
           Sed feugiat, tellus vel tristique posuere, diam</span> </div>
       </div>
       
       <!-- New Arrival -->
       <div class="arrival-block single-img-demos"> 
+        {% for product in products %}
         
         <!-- Item -->
         <div class="item"> 
-          <!-- Images --> 
-          <img class="img-1" src="{% static 'images/item-img-1-1.jpg' %}" alt=""> 
-          <!-- Overlay  -->
-          <div class="overlay"> 
-            <!-- Price --> 
-            <span class="price"><small>$</small>299</span>
-            <div class="position-center-center"> <a href="{% static 'images/item-img-1-1.jpg' %}" data-lighter><i class="icon-magnifier"></i></a> </div>
-          </div>
+          <!-- Item img -->
+         <img class="img-1" src="{{ product.image.url }}" alt="" /> 
+            <!-- Overlay -->
+            <div class="overlay">
+              <div class="position-center-center">
+                <div class="inn"><a href="{{ product.image.url }}" data-lighter><i class="icon-magnifier"></i></a></div>
+              </div>
+            </div>
+         
           <!-- Item Name -->
-          <div class="item-name"> <a href="#.">wooden chair</a>
-            <p>Lorem ipsum dolor sit amet</p>
+          <div class="item-name"> <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+            <p>{{ product.small_description|safe|truncatewords:'20'|linebreaks }}</p>
           </div>
+          <!-- Price --> 
+          <span class="price"><small>$</small>{{ product.money }}</span> 
         </div>
         
+        {% endfor %}
+        
+        {% comment %}
         <!-- Item -->
-        <div class="item"> 
-          <!-- Images --> 
-          <img class="img-1" src="{% static 'images/item-img-1-2.jpg' %}" alt=""> 
-          <!-- Overlay  -->
-          <div class="overlay"> 
-            <!-- Price --> 
-            <span class="price"><small>$</small>299</span>
-            <div class="position-center-center"> <a href="{% static 'images/item-img-1-2.jpg' %}" data-lighter><i class="icon-magnifier"></i></a> </div>
-          </div>
-          <!-- Item Name -->
-          <div class="item-name"> <a href="#.">MINIMALIST WOO TOYS</a>
-            <p>Lorem ipsum dolor sit amet</p>
-          </div>
-        </div>
+       
         
         <!-- Item -->
         <div class="item"> 
@@ -305,6 +301,7 @@
             <p>Lorem ipsum dolor sit amet</p>
           </div>
         </div>
+        {% endcomment %}
       </div>
     </section>
     
@@ -314,31 +311,36 @@
         
         <!-- Main Heading -->
         <div class="heading text-center">
-          <h4>popular products</h4>
+          <h4>{% trans 'popular products' %}</h4>
           <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec faucibus maximus vehicula. 
           Sed feugiat, tellus vel tristique posuere, diam</span> </div>
         
         <!-- Popular Item Slide -->
         <div class="papular-block block-slide single-img-demos"> 
-          
+          {% for i in all_products %}
           <!-- Item -->
           <div class="item"> 
             <!-- Item img -->
-            <div class="item-img"> <img class="img-1" src="{% static 'images/product-1.jpg' %}" alt="" > 
+            <div class="item-img"> <img class="img-1" src="{{ i.image.url }}" alt="" > 
               <!-- Overlay -->
               <div class="overlay">
                 <div class="position-center-center">
-                  <div class="inn"><a href="{% static 'images/product-1.jpg' %}" data-lighter><i class="icon-magnifier"></i></a> <a href="#."><i class="icon-basket"></i></a> <a href="#." ><i class="icon-heart"></i></a></div>
+                  <div class="inn"><a href="{{ i.image.url }}" data-lighter><i class="icon-magnifier"></i></a></div>
                 </div>
               </div>
             </div>
             <!-- Item Name -->
-            <div class="item-name"> <a href="#.">stone cup</a>
-              <p>Lorem ipsum dolor sit amet</p>
+            <div class="item-name"> <a href="{{ i.get_absolute_url }}">{{ i.title }}</a>
+              <p>{{ i.small_description|safe|truncatewords:'20'|linebreaks }}</p>
             </div>
             <!-- Price --> 
-            <span class="price"><small>$</small>299</span> </div>
+            <span class="price"><small>$</small>{{ i.money }}</span> 
+          </div>
+          {% endfor %}
           
+
+
+          {% comment %}
           <!-- Item -->
           <div class="item"> 
             <!-- Item img -->
@@ -392,7 +394,8 @@
             </div>
             <!-- Price --> 
             <span class="price"><small>$</small>299</span> </div>
-        </div>
+         </div>
+         {% endcomment %}
       </div>
     </section>
     
@@ -467,7 +470,7 @@
         
         <!-- Main Heading -->
         <div class="heading text-center">
-          <h4>about PAVSHOP</h4>
+          <h4>{% trans 'about PAVSHOP' %}</h4>
           <p>Phasellus lacinia fermentum bibendum. Interdum et malesuada fames ac ante ipsumien lacus, eu posuere odio luctus non. Nulla lacinia,
             eros vel fermentum consectetur, risus purus tempc, et iaculis odio dolor in ex. </p>
         </div>

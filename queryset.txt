@@ -1,0 +1,54 @@
+# Some QuerySet methods
+# open shell and let's test how queryset objects work
+
+# from products.models import *
+
+#                                                  " --  order_by -- "
+
+
+
+#  orderby = Product.objects.filter(price__gte=100).order_by('title')
+
+"""<QuerySet [<Product: BERGMUND Bar stool with backrest, black/Gunnared medium gray. 145 product_images/chair.jpg Furniture furniture chair>, 
+<Product: Calm Spirit Restorative and calming, Calm Spirit - Sleep helps relax your body before bed. 279 product_images/image_1.jpg Towel towels skin-care>, 
+<Product: Cole Haan This sophisticated day-to-night crossbody is designed in a woven texture with a chainlink strap. 198 product_images/bag_1.jpg Bags bag bag>, 
+<Product: LG True-to-life color. Effortless connectivity. 789 product_images/TV.jpg Electronics electronic tv>, 
+<Product: Pegs Sleek, multi-use magnetic pegs for indispensable workspace organization 325 product_images/pegs.jpg Furniture furniture begs>, 
+<Product: Samsung Brilliant Color Starts Here The latest in Samsung LED TV 456 product_images/tv_1.jpg Electronics electronic tv1>]>"""
+
+
+
+# orderby = Product.objects.filter(price__gte=100).order_by('-title')    ~ desc: yuxaridan asagi siralama
+
+"""<QuerySet [<Product: Samsung Brilliant Color Starts Here The latest in Samsung LED TV 456 product_images/tv_1.jpg Electronics electronic tv1>, 
+<Product: Pegs Sleek, multi-use magnetic pegs for indispensable workspace organization 325 product_images/pegs.jpg Furniture furniture begs>, 
+<Product: LG True-to-life color. Effortless connectivity. 789 product_images/TV.jpg Electronics electronic tv>, 
+<Product: Cole Haan This sophisticated day-to-night crossbody is designed in a woven texture with a chainlink strap. 198 product_images/bag_1.jpg Bags bag bag>, 
+<Product: Calm Spirit Restorative and calming, Calm Spirit - Sleep helps relax your body before bed. 279 product_images/image_1.jpg Towel towels skin-care>, 
+<Product: BERGMUND Bar stool with backrest, black/Gunnared medium gray. 145 product_images/chair.jpg Furniture furniture chair>]>"""
+
+
+
+# orderby = Product.objects.filter(price__gte=100).order_by('title').first()
+
+"""<Product: BERGMUND Bar stool with backrest, black/Gunnared medium gray. 145 product_images/chair.jpg Furniture furniture chair>"""
+
+
+# orderby = Product.objects.filter(price__gte=100).order_by('title').first().title
+
+'BERGMUND'
+
+
+
+#              -- .values()  ---
+
+
+# p = Product.objects.values('title').query
+# p
+"<django.db.models.sql.query.Query object at 0x0000026E981CE790>"
+
+# str(p)
+'SELECT "products_product"."title" FROM "products_product"'
+
+
+

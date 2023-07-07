@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 {% load static %}
+
+
+{% load i18n %}
+{% load flags %}
+
+
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -37,6 +43,7 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
 </head>
 <body>
 
@@ -56,7 +63,7 @@
       <div class="container"> 
         
         <!-- Logo -->
-        <div class="logo"> <a href="{% url 'index_page' %}"><img class="img-responsive" src="{% static 'images/logo.png' %}" alt="" ></a> </div>
+        <div class="logo"> <a href="{% url 'product_list_page' %}"><img class="img-responsive" src="{% static 'images/logo.png' %}" alt="" ></a> </div>
         <nav class="navbar ownmenu">
           <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-open-btn" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"><i class="fa fa-navicon"></i></span> </button>
@@ -65,40 +72,46 @@
            <!-- NAV -->
           <div class="collapse navbar-collapse" id="nav-open-btn">
             <ul class="nav">
-              <li class="dropdown active"> <a href="{% url 'base_page' %}" class="dropdown-toggle" data-toggle="dropdown">Home</a>
+              
+              <li class="dropdown"> <a href="#." class="dropdown-toggle" data-toggle="dropdown">{% trans 'Home' %}</a>
                 <ul class="dropdown-menu">
-                  <li> <a href="index.html">Index Default</a> </li>
-                  <li> <a href="index-1.html">Index 2</a> </li>
-                  <li> <a href="index-2.html">Index 3</a></li>
-                  <li> <a href="index-header-1.html">Index Header 1</a></li>
-                  <li> <a href="index-header-2.html">Index Header 2</a></li>
-                  <li> <a href="index-header-3.html">Index Header 3</a></li>
-                  <li> <a href="index-header-4.html">Index Header 4</a></li>
+                  <li> <a href="{% url 'about_us_page' %}">{% trans 'About Us' %} </a> </li>
+                  <li> <a href="{% url 'blog_list_page' %}">{% trans 'Blogs' %}</a> </li>
+                  <!-- <li> <a href="{% url 'blog_detail_page' 1 %}">Blog Detail </a> </li> -->
+                  <!-- <li> <a href="shop_04.html">Shop 04 </a> </li> -->
+                  <li> <a href="{% url 'product_list_page' %}">{% trans 'Product List' %}</a> </li>
+                  <!-- <li> <a href="{% url 'product_detail_page' 1 %}">Product Detail</a> </li> -->
+                  <li> <a href="{% url 'home' %}">{% trans 'Index' %}</a> </li>
+                  <li> <a href="{% url 'shopping_cart_page' %}">{% trans 'Shopping Cart' %}</a> </li>
+                  <li> <a href="{% url 'checkout_page' %}">{% trans 'Checkout' %}</a> </li>
+                  <!-- <li> <a href="about-us_01.html">About 01</a> </li>
+                  <li> <a href="about-us_02.html">About 02</a> </li> -->
+                  <!-- <li> <a href="{% url 'contact_page' %}">Contact</a> </li> -->
+                  <!-- <li> <a href="blog-list_01.html">Blog List 01</a> </li> -->
+                  <!-- <li> <a href="blog-list_02.html">Blog List 02</a> </li> -->
+                  <!-- <li> <a href="blog-list_03.html">Blog List 03 </a> </li> -->
+                  <!-- <li> <a href="blog-detail_01.html">Blog Detail 01 </a> </li> -->
+                  <li> <a href="{% url 'register_page' %}">{% trans 'Register' %}</a> </li>
                 </ul>
               </li>
-              <li class="dropdown"> <a href="#." class="dropdown-toggle" data-toggle="dropdown">Pages</a>
+
+
+              <!--  User Profile Page  -->
+
+              <li class="dropdown"> <a href="#." class="dropdown-toggle" data-toggle="dropdown">{% trans 'Create Blog' %}</a>
                 <ul class="dropdown-menu">
-                  <li> <a href="shop_01.html">Shop 01 </a> </li>
-                  <li> <a href="shop_02.html">Shop 02</a> </li>
-                  <li> <a href="shop_03.html">Shop 03 </a> </li>
-                  <li> <a href="shop_04.html">Shop 04 </a> </li>
-                  <li> <a href="product-detail_01.html">Product Detail 01</a> </li>
-                  <li> <a href="product-detail_02.html">Product Detail 02</a> </li>
-                  <li> <a href="{% url 'shopping_cart_page' %}">Shopping Cart</a> </li>
-                  <li> <a href="{% url 'checkout_page' %}">Checkout</a> </li>
-                  <li> <a href="about-us_01.html">About 01</a> </li>
-                  <li> <a href="about-us_02.html">About 02</a> </li>
-                  <li> <a href="{% url 'contact_page' %}">Contact</a> </li>
-                  <li> <a href="blog-list_01.html">Blog List 01</a> </li>
-                  <li> <a href="blog-list_02.html">Blog List 02</a> </li>
-                  <li> <a href="blog-list_03.html">Blog List 03 </a> </li>
-                  <li> <a href="blog-detail_01.html">Blog Detail 01 </a> </li>
+                  <li> <a href="{% url 'create_blog_page' %}">{% trans 'Create own story' %} </a> </li>
+
+
+                  
                 </ul>
               </li>
-              <li> <a href="about-us_01.html">About </a> </li>
+
+              
               
               <!-- Two Link Option -->
-              <li class="dropdown"> <a href="#." class="dropdown-toggle" data-toggle="dropdown">Designer</a>
+              <li> <a href="{% url 'register_page' %}">{% trans 'Register' %}</a> </li>
+              <!-- <li class="dropdown"> <a href="#." class="dropdown-toggle" data-toggle="dropdown">Category</a>
                 <div class="dropdown-menu two-option">
                   <div class="row">
                     <ul class="col-sm-6">
@@ -123,31 +136,31 @@
                     </ul>
                   </div>
                 </div>
-              </li>
+              </li> -->
               
               <!-- MEGA MENU -->
-              <li class="dropdown megamenu"> <a href="#." class="dropdown-toggle" data-toggle="dropdown">store</a>
+              <li class="dropdown megamenu"> <a href="#." class="dropdown-toggle" data-toggle="dropdown">{% trans 'store' %}</a>
                 <div class="dropdown-menu">
                   <div class="row"> 
                     
                     <!-- Shop Pages -->
                     <div class="col-md-3">
-                      <h6>Shop Pages</h6>
+                      <h6>{% trans 'Shop Pages' %}</h6>
                       <ul>
-                        <li> <a href="shop_01.html">Shop 01 </a> </li>
-                        <li> <a href="shop_02.html">Shop 02</a> </li>
-                        <li> <a href="shop_03.html">Shop 03 </a> </li>
-                        <li> <a href="shop_04.html">Shop 04 </a> </li>
-                        <li> <a href="product-detail_01.html">Product Detail 01</a> </li>
-                        <li> <a href="product-detail_02.html">Product Detail 02</a> </li>
-                        <li> <a href="{% url 'shopping_cart_page' %}">Shopping Cart</a> </li>
-                        <li> <a href="{% url 'checkout_page' %}">Checkout</a> </li>
+                        <li> <a href="{% url 'product_list_page' %}">{% trans 'Product List' %} </a> </li>
+                        <li> <a href="{% url 'home' %}">{% trans 'Index' %} </a> </li>
+                        <!-- <li> <a href="shop_03.html">Shop 03 </a> </li> -->
+                        <!-- <li> <a href="shop_04.html">Shop 04 </a> </li> -->
+                        <!-- <li> <a href="product-detail_01.html">Product Detail 01</a> </li> -->
+                        <!-- <li> <a href="product-detail_02.html">Product Detail 02</a> </li> -->
+                        <li> <a href="{% url 'shopping_cart_page' %}">{% trans 'Shopping Cart' %}</a> </li>
+                        <li> <a href="{% url 'checkout_page' %}">{% trans 'Checkout' %}</a> </li>
                       </ul>
                     </div>
                     
                     <!-- TOp Rate Products -->
                     <div class="col-md-4">
-                      <h6>TOp Rate Products</h6>
+                      <h6>{% trans 'TOp Rate Products' %}</h6>
                       <div class="top-rated">
                         <ul>
                           <li>
@@ -183,7 +196,7 @@
                     
                     <!-- New Arrival -->
                     <div class="col-md-5">
-                      <h5>NEW ARRIVAL 2016 <span>(Best Collection)</span></h5>
+                      <h5>NEW ARRIVAL 2023 <span>(Best Collection)</span></h5>
                       <img class="nav-img" src="{% static 'images/nav-img.png' %}" alt="" >
                       <p>Lorem ipsum dolor sit amet,<br>
                         consectetur adipiscing elit. <br>
@@ -193,7 +206,33 @@
                   </div>
                 </div>
               </li>
-              <li> <a href="{% url 'contact_page' %}"> contact</a> </li>
+              <li> <a href="{% url 'contact_page' %}"> {% trans 'contact' %}</a> </li>
+              
+
+             <!-- Language  -->
+              <div>
+                <li>
+                {% get_current_language as LANGUAGE_CODE %} 
+                {% get_available_languages as LANGUAGES %}
+                {% get_language_info_list for LANGUAGES as languages %} 
+                <p>Choose a language: </p>
+
+                {% for language in languages %}                                   
+                    <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+
+                      {% languages %}
+                                                
+                    </option>           
+                {% endfor %}
+                </li>
+              </div>
+                  
+
+             
+
+                
+
+              
             </ul>
           </div>
           
@@ -204,12 +243,19 @@
               <!-- USER INFO -->
               <li class="dropdown user-acc"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" ><i class="icon-user"></i> </a>
                 <ul class="dropdown-menu">
+                  {% if request.user.is_authenticated %}
                   <li>
-                    <h6>HELLO! Jhon Smith</h6>
+                    <h6>{% trans 'HELLO' %}, {{ request.user.get_full_name }}!</h6>
                   </li>
-                  <li><a href="{% url 'shopping_cart_page' %}">MY CART</a></li>
-                  <li><a href="{% url 'login_page' %}">ACCOUNT INFO</a></li>
-                  <li><a href="{% url 'register_page' %}">LOG OUT</a></li>
+                  <li><a href="{% url 'shopping_cart_page' %}">{% trans 'MY CART' %}</a></li>
+                  <li><a href="{% url 'profiles' %}">{% trans 'ACCOUNT INFO' %}</a></li>
+                  <li><a href="{% url 'logout_page' %}">{% trans 'Log Out' %} </a></li>
+                  {% else %}
+                     <h6>HELLO, {{ request.user }} !</h6>
+                    <li><a href="{% url 'login_page' %}">{% trans 'Log In' %} </a></li>
+                    <li><a href="{% url 'shopping_cart_page' %}">{% trans 'MY CART' %}</a></li>
+                    <li><a href="{% url 'profiles' %}">{% trans 'ACCOUNT INFO' %}</a></li>
+                  {% endif %}
                 </ul>
               </li>
               
@@ -237,8 +283,8 @@
                   </li>
                   <li class="margin-0">
                     <div class="row">
-                      <div class="col-xs-6"> <a href="{% url 'shopping_cart_page' %}" class="btn">VIEW CART</a></div>
-                      <div class="col-xs-6 "> <a href="{% url 'checkout_page' %}" class="btn">CHECK OUT</a></div>
+                      <div class="col-xs-6"> <a href="{% url 'shopping_cart_page' %}" class="btn">{% trans 'VIEW CART' %}</a></div>
+                      <div class="col-xs-6 "> <a href="{% url 'checkout_page' %}" class="btn">{% trans 'CHECK OUT' %}</a></div>
                     </div>
                   </li>
                 </ul>
@@ -250,8 +296,8 @@
                   <div class="search-overlay"></div>
                   <div class="position-center-center">
                     <div class="search">
-                      <form>
-                        <input type="search" placeholder="Search Shop">
+                      <form action="{% url 'product_list_page' %}">
+                        <input type="search" placeholder="Search Shop" name="search">
                         <button type="submit"><i class="icon-check"></i></button>
                       </form>
                     </div>
@@ -290,11 +336,15 @@
       <section class="news-letter padding-top-150 padding-bottom-150">
         <div class="container">
           <div class="heading light-head text-center margin-bottom-30">
-            <h4>NEWSLETTER</h4>
+            <h4>{% trans 'NEWSLETTER' %}</h4>
             <span>Phasellus lacinia fermentum bibendum. Interdum et malesuada fames ac ante ipsumien lacus, eu posuere odi </span> </div>
-          <form>
-            <input type="email" placeholder="Enter your email address" required>
-            <button type="submit">SEND ME</button>
+          <form action="" class="newsletter-form" id="newsletter-form" method="POST" >
+            {% csrf_token %}
+             
+            
+            
+            <input type="email" id="newsletter-email" name="email" placeholder="Enter your email address" required>
+            <button type="submit">{% trans 'SEND ME' %}</button>
           </form>
         </div>
       </section>
@@ -307,7 +357,7 @@
         <!-- ABOUT Location -->
         <div class="col-md-3">
           <div class="about-footer"> <img class="margin-bottom-30" src="{% static 'images/logo-foot.png' %}" alt="" >
-            <p><i class="icon-pointer"></i> Street No. 12, Newyork 12, <br>
+            <p><i class="icon-pointer"></i> {% trans 'Street No. 12, Newyork 12' %}, <br>
               MD - 123, USA.</p>
             <p><i class="icon-call-end"></i> 1.800.123.456789</p>
             <p><i class="icon-envelope"></i> info@PAVSHOP.com</p>
@@ -316,46 +366,46 @@
         
         <!-- HELPFUL LINKS -->
         <div class="col-md-3">
-          <h6>HELPFUL LINKS</h6>
+          <h6>{% trans 'HELPFUL LINKS' %}</h6>
           <ul class="link">
-            <li><a href="#."> Products</a></li>
-            <li><a href="#."> Find a Store</a></li>
-            <li><a href="#."> Features</a></li>
-            <li><a href="#."> Privacy Policy</a></li>
-            <li><a href="#."> Blog</a></li>
-            <li><a href="#."> Press Kit </a></li>
+            <li><a href="#."> {% trans 'Products' %}</a></li>
+            <li><a href="#."> {% trans 'Find a Store' %}</a></li>
+            <li><a href="#."> {% trans 'Features' %}</a></li>
+            <li><a href="#."> {% trans 'Privacy Policy' %}</a></li>
+            <li><a href="#."> {% trans 'Blog' %}</a></li>
+            <li><a href="#."> {% trans 'Press Kit' %} </a></li>
           </ul>
         </div>
         
         <!-- SHOP -->
         <div class="col-md-3">
-          <h6>SHOP</h6>
+          <h6>{% trans 'SHOP' %}</h6>
           <ul class="link">
-            <li><a href="#."> About Us</a></li>
-            <li><a href="#."> Career</a></li>
-            <li><a href="#."> Shipping Methods</a></li>
-            <li><a href="#."> Contact</a></li>
-            <li><a href="#."> Support</a></li>
-            <li><a href="#."> Retailer</a></li>
+            <li><a href="#."> {% trans 'About Us' %}</a></li>
+            <li><a href="#."> {% trans 'Career' %}</a></li>
+            <li><a href="#."> {% trans 'Shipping Methods' %}</a></li>
+            <li><a href="#."> {% trans 'Contact' %}</a></li>
+            <li><a href="#."> {% trans 'Support' %}</a></li>
+            <li><a href="#."> {% trans 'Retailer' %}</a></li>
           </ul>
         </div>
         
         <!-- MY ACCOUNT -->
         <div class="col-md-3">
-          <h6>MY ACCOUNT</h6>
+          <h6>{% trans 'MY ACCOUNT' %}</h6>
           <ul class="link">
-            <li><a href="#."> Login</a></li>
-            <li><a href="#."> My Account</a></li>
-            <li><a href="#."> My Cart</a></li>
-            <li><a href="#."> Wishlist</a></li>
-            <li><a href="#."> Checkout</a></li>
+            <li><a href="#."> {% trans 'Login' %}</a></li>
+            <li><a href="#."> {% trans 'My Account' %}</a></li>
+            <li><a href="#."> {% trans 'My Cart' %}</a></li>
+            <li><a href="#."> {% trans 'Wishlist' %}</a></li>
+            <li><a href="#."> {% trans 'Checkout' %}</a></li>
           </ul>
         </div>
         
         <!-- Rights -->
         
         <div class="rights">
-          <p>©  2017  PAVSHOP All right reserved. </p>
+          <p>©  2017  PAVSHOP {% trans 'All right reserved.' %} </p>
           <div class="scroll"> <a href="#wrap" class="go-up"><i class="lnr lnr-arrow-up"></i></a> </div>
         </div>
       </div>
@@ -375,6 +425,10 @@
   <script type="text/javascript" src="{% static 'rs-plugin/js/jquery.tp.min.js' %}"></script> 
   <script src="{% static 'js/main.js' %}"></script> 
   <script src="{% static 'js/main.js' %}"></script>
+  <script src="{% static 'js/newsletter.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+  <script src="{% static 'js/scripts.js' %}"></script>
+
 
 
 {% block js %}
@@ -382,5 +436,5 @@
 
 
 {% endblock %}
-  </body>
-  </html>
+</body>
+</html>

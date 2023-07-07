@@ -3,6 +3,7 @@
 
 {% load static %}
 
+{% load i18n %}
 
 {% block content %}
 
@@ -14,7 +15,7 @@
   <section class="sub-bnr" data-stellar-background-ratio="0.5">
     <div class="position-center-center">
       <div class="container">
-        <h4>CHECKOUT</h4>
+        <h4>{% trans 'CHECKOUT' %}</h4>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec faucibus maximus vehicula. 
           Sed feugiat, tellus vel tristique posuere, diam</p>
         <ol class="breadcrumb">
@@ -42,64 +43,80 @@
               
               <!-- ESTIMATE SHIPPING & TAX -->
               <div class="col-sm-7">
-                <h6>BILLING DETAILS</h6>
-                <form>
+                <h6>{% trans 'BILLING DETAILS' %}</h6>
+                
+                <form method="POST">
+                  {% csrf_token %}
                   <ul class="row">
                     
                     <!-- Name -->
                     <li class="col-md-6">
-                      <label> *FIRST NAME
-                        <input type="text" name="first-name" value="" placeholder="">
+                      <label> *{% trans 'FIRST NAME' %}
+                        <input type="text" name="first-name" value=" {{ request.user.first_name }}" placeholder="" disabled>
+                       
                       </label>
                     </li>
                     <!-- LAST NAME -->
                     <li class="col-md-6">
-                      <label> *LAST NAME
-                        <input type="text" name="last-name" value="" placeholder="">
+                      <label> *{% trans 'LAST NAME' %}
+                        <!-- <input type="text" name="last-name" value="" placeholder=""> -->
+                        <input type="text" name="first-name" value=" {{ request.user.last_name }}" placeholder="" disabled>
+
+                        
                       </label>
                     </li>
                     <li class="col-md-6"> 
                       <!-- COMPANY NAME -->
-                      <label>COMPANY NAME
-                        <input type="text" name="company" value="" placeholder="">
+                      <label>{% trans 'COMPANY NAME' %}
+                        <!-- <input type="text" name="company" value="" placeholder=""> -->
+                        {{ billform.company }}
                       </label>
                     </li>
                     <li class="col-md-6"> 
                       <!-- ADDRESS -->
-                      <label>*ADDRESS
-                        <input type="text" name="address" value="" placeholder="">
+                      <label>*{% trans 'ADDRESS' %}
+                        <!-- <input type="text" name="address" value="" placeholder=""> -->
+                        {{ billform.address }}
                       </label>
                     </li>
                     <!-- TOWN/CITY -->
                     <li class="col-md-6">
-                      <label>*TOWN/CITY
-                        <input type="text" name="town" value="" placeholder="">
+                      <label>*{% trans 'TOWN/CITY' %}
+                        <!-- <input type="text" name="town" value="" placeholder=""> -->
+                        {{ billform.city }}
                       </label>
                     </li>
                     
                     <!-- COUNTRY -->
                     <li class="col-md-6">
-                      <label> COUNTRY
-                        <input type="text" name="contry-state" value="" placeholder="">
+                      <label> {% trans 'COUNTRY' %}
+                        <!-- <input type="text" name="contry-state" value="" placeholder=""> -->
+                        {{ billform.country }}
                       </label>
                     </li>
                     
                     <!-- EMAIL ADDRESS -->
                     <li class="col-md-6">
-                      <label> *EMAIL ADDRESS
-                        <input type="text" name="contry-state" value="" placeholder="">
+                      <label> *{% trans 'EMAIL ADDRESS' %}
+                        <!-- <input type="text" name="contry-state" value="" placeholder=""> -->
+                        <input type="text" name="first-name" value=" {{ request.user.email }}" placeholder="" disabled>
+
                       </label>
                     </li>
                     <!-- PHONE -->
                     <li class="col-md-6">
-                      <label> *PHONE
-                        <input type="text" name="postal-code" value="" placeholder="">
+                      <label> *{% trans 'PHONE' %}
+                        <!-- <input type="text" name="postal-code" value="" placeholder=""> -->
+                        {{ billform.phone }}
+                       
                       </label>
                     </li>
-                    
+                   
+                   
+                  
                     <!-- PHONE -->
                     <li class="col-md-6">
-                      <button type="submit" class="btn">continue</button>
+                      <button type="submit" name="continue" class="btn">{% trans 'continue' %}</button>
                     </li>
                     
                     <!-- CREATE AN ACCOUNT -->
@@ -110,75 +127,96 @@
                       </div>
                     </li>
                   </ul>
+                  
                 </form>
                 
+
+               
+                
                 <!-- SHIPPING info -->
-                <h6 class="margin-top-50">SHIPPING info</h6>
-                <form>
+                <h6 class="margin-top-50">{% trans 'SHIPPING info' %}</h6>
+                
+                <form method="POST">
+                 {% csrf_token %}
+                 
                   <ul class="row">
                     
                     <!-- Name -->
                     <li class="col-md-6">
-                      <label> *FIRST NAME
-                        <input type="text" name="first-name" value="" placeholder="">
+                      <label> *{% trans 'FIRST NAME' %}
+                        <!-- <input type="text" name="first-name" value="" placeholder="first-name"> -->
+                        <input type="text" name="first-name" value=" {{ request.user.first_name }}" placeholder="" disabled>
+
                       </label>
                     </li>
                     <!-- LAST NAME -->
                     <li class="col-md-6">
-                      <label> *LAST NAME
-                        <input type="text" name="last-name" value="" placeholder="">
+                      <label> *{% trans 'LAST NAME' %}
+                        <!-- <input type="text" name="last-name" value="" placeholder="last-name"> -->
+                        <input type="text" name="first-name" value=" {{ request.user.last_name }}" placeholder="" disabled>
+                        
                       </label>
                     </li>
                     <li class="col-md-6"> 
                       <!-- COMPANY NAME -->
-                      <label>COMPANY NAME
-                        <input type="text" name="company" value="" placeholder="">
+                      <label>{% trans 'COMPANY NAME' %}
+                        <!-- <input type="text" name="company" value="" placeholder="company"> -->
+                        {{ shipform.company }}
                       </label>
                     </li>
                     <li class="col-md-6"> 
                       <!-- ADDRESS -->
-                      <label>*ADDRESS
-                        <input type="text" name="address" value="" placeholder="">
+                      <label>*{% trans 'ADDRESS' %}
+                        <!-- <input type="text" name="address" value="" placeholder="address"> -->
+                        {{ shipform.address }}
                       </label>
                     </li>
                     <!-- TOWN/CITY -->
                     <li class="col-md-6">
-                      <label>*TOWN/CITY
-                        <input type="text" name="town" value="" placeholder="">
+                      <label>*{% trans 'TOWN/CITY' %}
+                        <!-- <input type="text" name="town" value="" placeholder="CITY"> -->
+                        {{ shipform.city }}
                       </label>
                     </li>
                     
                     <!-- COUNTRY -->
                     <li class="col-md-6">
-                      <label> COUNTRY
-                        <input type="text" name="contry-state" value="" placeholder="">
+                      <label> {% trans 'COUNTRY' %}
+                        <!-- <input type="text" name="contry-state" value="" placeholder="COUNTRY"> -->
+                        {{ shipform.country }}
                       </label>
                     </li>
                     
                     <!-- EMAIL ADDRESS -->
                     <li class="col-md-6">
-                      <label> *EMAIL ADDRESS
-                        <input type="text" name="contry-state" value="" placeholder="">
+                      <label> *{% trans 'EMAIL ADDRESS' %}
+                        <!-- <input type="text" name="contry-state" value="" placeholder="EMAIL"> -->
+                        <input type="text" name="first-name" value=" {{ request.user.email }}" placeholder="" disabled>
+
                       </label>
                     </li>
                     <!-- PHONE -->
                     <li class="col-md-6">
-                      <label> *PHONE
-                        <input type="text" name="postal-code" value="" placeholder="">
+                      <label> *{% trans 'PHONE' %}
+                        <!-- <input type="text" name="postal-code" value="" placeholder="PHONE"> -->
+                        {{ shipform.phone }}
                       </label>
                     </li>
-                    
+                   
                     <!-- PHONE -->
                     <li class="col-md-6">
-                      <button type="submit" class="btn">SUBMIT</button>
+                      <button type="submit" name="submit" class="btn">{% trans 'SUBMIT' %}</button>
                     </li>
                   </ul>
+                  
+                
                 </form>
+                
               </div>
               
               <!-- SUB TOTAL -->
               <div class="col-sm-5">
-                <h6>YOUR ORDER</h6>
+                <h6>{% trans 'YOUR ORDER' %}</h6>
                 <div class="order-place">
                   <div class="order-detail">
                     <p>WOOD CHAIR <span>$598 </span></p>
@@ -186,7 +224,7 @@
                     <p>WOOD SPOON <span> $139</span></p>
                     
                     <!-- SUB TOTAL -->
-                    <p class="all-total">TOTAL COST <span> $998</span></p>
+                    <p class="all-total">{% trans 'TOTAL COST' %} <span> $998</span></p>
                   </div>
                   <div class="pay-meth">
                     <ul>
@@ -222,7 +260,7 @@
                         </div>
                       </li>
                     </ul>
-                    <a href="#." class="btn  btn-dark pull-right margin-top-30">PLACE ORDER</a> </div>
+                    <a href="#." class="btn  btn-dark pull-right margin-top-30">{% trans 'PLACE ORDER' %}</a> </div>
                 </div>
               </div>
             </div>
@@ -237,7 +275,7 @@
         
         <!-- Main Heading -->
         <div class="heading text-center">
-          <h4>about PAVSHOP</h4>
+          <h4>{% trans 'about PAVSHOP' %}</h4>
           <p>Phasellus lacinia fermentum bibendum. Interdum et malesuada fames ac ante ipsumien lacus, eu posuere odio luctus non. Nulla lacinia,
             eros vel fermentum consectetur, risus purus tempc, et iaculis odio dolor in ex. </p>
         </div>

@@ -3,6 +3,9 @@
 
 {% load static %}
 
+{% load i18n %}
+
+
 
 {% block content %}
 
@@ -17,7 +20,7 @@
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec faucibus maximus vehicula. 
           Sed feugiat, tellus vel tristique posuere, diam</p>
         <ol class="breadcrumb">
-          <li><a href="#">Home</a></li>
+          <li><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
           <li class="active">BLOG</li>
         </ol>
       </div>
@@ -34,27 +37,43 @@
           <div class="col-md-9"> 
             
             <!-- Article -->
+    
+       {% if storys %}
+           {% for story in storys %}
             <article>
               <div class="row">
                 <div class="col-sm-5"> 
                   <!-- Post Img --> 
-                  <img class="img-responsive" src="{% static 'images/blog-list-img-1-2.jpg' %}" alt="" > </div>
+                  <img class="img-responsive" src="{{ story.image.url }}" alt="" > </div>
                 <div class="col-sm-7"> 
                   <!-- Tittle -->
-                  <div class="post-tittle left"> <a href="#." class="tittle">The unique Chair By PAVSHOP</a> 
+                  <div class="post-tittle left"> <a href="{{story.get_absolute_url}}" class="tittle">{{ story.title }}</a> 
                     <!-- Post Info --> 
-                    <span><i class="primary-color icon-user"></i> by admin</span> <span><i class="primary-color icon-calendar"></i> April 27, 2016</span> <span><i class="primary-color icon-bubble"></i> 05</span> <span><i class="primary-color icon-tag"></i> Furniture</span> </div>
+                    <span><i class="primary-color icon-user"></i> {{ story.author }} </span> <span><i class="primary-color icon-calendar"></i> {{ story.created_at }} </span> <span><i class="primary-color icon-bubble"></i> {{story.num_of_reviews}}</span> <span><i class="primary-color icon-tag"></i> {{ story.category.name }} </span> </div>
                   <!-- Post Content -->
                   <div class="text-left">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam volutpat dui at lacus aliquet, a consequat enim aliquet. Integer molestie sit amet sem et faucibus. Nunc ornare pharetra dui, vitae auctor orci fringilla eget. Pellentesque in placerat felis. Etiam mollis venenatis luctus.  
-                      
-                      Nunc at blandit neque, bibendum varius purus.</p>
-                    <a href="#." class="red-more">READ MORE</a> </div>
+                    
+                    <p>{{ story.description|safe|truncatewords:'50'|linebreaks }}</p>
+                    <a href="{{story.get_absolute_url}}" class="red-more">{% trans 'READ MORE' %}</a> </div>
+
+                    <!-- <a href="{% url 'blog_detail_page' story.pk %}" class="red-more">READ MORE</a> </div> -->
                 </div>
               </div>
             </article>
+            {% endfor %}
+            
+        {% else %}
+            {% include 'search_blogs.html' %}
+            
+             <!-- <h2>There is no results for this search </h2> -->
+
+        {% endif %}
+    
+
+          
             
             <!-- Article -->
+            {% comment %}
             <article>
               <div class="row">
                 <div class="col-sm-5"> 
@@ -74,8 +93,12 @@
                 </div>
               </div>
             </article>
+            {% endcomment %}
             
+
+
             <!-- Article -->
+            {% comment %}
             <article>
               <div class="row">
                 <div class="col-sm-5"> 
@@ -95,8 +118,11 @@
                 </div>
               </div>
             </article>
+            {% endcomment %}
             
+
             <!-- Article -->
+            {% comment %}
             <article>
               <div class="row">
                 <div class="col-sm-5"> 
@@ -116,7 +142,11 @@
                 </div>
               </div>
             </article>
+            {% endcomment %}
+
+
             <!-- Article -->
+            {% comment %}
             <article>
               <div class="row">
                 <div class="col-sm-5"> 
@@ -136,32 +166,96 @@
                 </div>
               </div>
             </article>
-            
+            {% endcomment %}
+
+
             <!-- Pagination -->
             <ul class="pagination in-center">
-              <li><a href="#"><i class="fa fa-angle-left"></i></a></li>
-              <li class="active"><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+              {% if page_obj.has_previous %}
+              <li><a href="?page={{ page_obj.previous_page_number }}"><i class="fa fa-angle-left"></i></a></li>
+              {% else %}
+                <li class="disabled"><i class="fa fa-angle-left"></i></li>
+              {% endif %}
+              
+              {% for page in page_obj.paginator.page_range %}
+              {% if page is page_obj.numbers %}
+              <li class="active"><a href="?page={{page}}">{{ page }}</a></li>
+              {% else  %}
+
+              <li><a href="?page={{page}}">{{ page }}</a></li>
+              {% endif %}
+              {% endfor %}
+
+
+              
+
+              {% if page_obj.has_next %}
+              <li><a href="?page={{ page_obj.next_page_number }}"><i class="fa fa-angle-right"></i></a></li>
+              {% else %}
+                <li class="disabled"><i class="fa fa-angle-right"></i></li>
+              {% endif %}
+              <!-- <li><a href="#">3</a></li> -->
+              
             </ul>
-          </div>
+              
+
+
+
+
+
+
+
+
+            <!-- Pagination -->
+            <!-- {% if storys.has_other_pages %}
+            <ul class="pagination in-center">
+              {% if storys.has_previous %}
+                  <li><a href="?page={{ storys.previous_page_number }}"><i class="fa fa-angle-left"></i></a></li>
+              {% else %}
+                  <li class="disabled"><i class="fa fa-angle-left"></i></li>
+              {% endif %}
+
+
+              {% for i in storys.paginator.page_range %}
+                 {% if storys.number == i %}
+                    <li class="active"><a href="?page={{ i }}">{{ i }}</a></li>
+                 {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                 {% endif %}
+              
+              {% endfor %}
+
+
+              {% if storys.has_next %}
+                <li><a href="?page={{ storys.next_page_number }}"><i class="fa fa-angle-right"></i></a></li>
+              {% else %}
+                <li class="disabled"><i class="fa fa-angle-right"></i></li>
+              {% endif %}
+                  
+            </ul>
+            {% endif %} -->
+                      
+         </div> 
           
           <!-- Sider Bar -->
           <div class="col-md-3"> 
             
             <!-- SEARCH -->
             <div class="search">
-              <input class="form-control" type="search" placeholder="Search">
+              <form action="{% url 'blog_list_page' %}" role="search" method="get">
+              <input class="form-control" type="search" placeholder="Search" name="search" role="search">
               <button type="submit"><i class="fa fa-search"></i></button>
+                                
+              </form>
             </div>
             <div class="shop-sidebar"> 
               
               <!-- Category -->
-              <h5 class="shop-tittle margin-bottom-30">category</h5>
+              <h5 class="shop-tittle margin-bottom-30">{% trans 'category' %}</h5>
               <ul class="shop-cate">
-                <li><a href="#."> Chair <span>24</span></a></li>
-                <li><a href="#."> Bag <span>122</span></a></li>
+                {% for story in story_count %}
+                <li><a href="?category={{story.name}}"> {{ story.name }} <span> {{ story.stories.count }} </span></a></li>
+                <!-- <li><a href="#."> Bag <span>122</span></a></li>
                 <li><a href="#."> Soffa <span>09</span></a></li>
                 <li><a href="#."> Bed <span>12</span></a></li>
                 <li><a href="#."> Shoes <span>98</span></a></li>
@@ -170,18 +264,20 @@
                 <li><a href="#."> Curtains <span>43</span></a></li>
                 <li><a href="#."> TV Cabinets <span>12</span></a></li>
                 <li><a href="#."> Clocks <span>18</span></a></li>
-                <li><a href="#."> Towels <span>25</span></a></li>
+                <li><a href="#."> Towels <span>25</span></a></li> -->
+                {% endfor %}
               </ul>
               
               <!-- Recent Post -->
-              <h5 class="shop-tittle margin-top-60 margin-bottom-30">recent post</h5>
+              <h5 class="shop-tittle margin-top-60 margin-bottom-30">{% trans 'recent post' %}</h5>
               <ul class="papu-post margin-top-20">
+                {% for i in recent_post %}
+                   
                 <li class="media">
-                  <div class="media-left"> <a href="#"> <img class="media-object" src="{% static 'images/sm-post-1.jpg' %}" alt=""></a> </div>
-                  <div class="media-body"> <a class="media-heading" href="#.">Nullam volutpat dui at 
-                    a consequat enimiquet</a> <span>Posted on Sep 27</span> </div>
+                  <div class="media-left"> <a href="#"> <img class="media-object" src="{{i.image.url}}" alt=""></a> </div>
+                  <div class="media-body"> <a class="media-heading" href="{{i.get_absolute_url}}">{{ i.description|safe|truncatewords:'10'|linebreaks }}</a> <span>Posted on:  {{ i.updated_at|date:"d M Y" }}</span> </div>
                 </li>
-                <li class="media">
+                <!-- <li class="media">
                   <div class="media-left"> <a href="#"> <img class="media-object" src="{% static 'images/sm-post-2.jpg' %}" alt=""></a> </div>
                   <div class="media-body"> <a class="media-heading" href="#.">Nullam volutpat dui at 
                     a consequat enimiquet</a> <span>Posted on Sep 27</span> </div>
@@ -190,31 +286,52 @@
                   <div class="media-left"> <a href="#"> <img class="media-object" src="{% static 'images/sm-post-3.jpg' %}" alt=""></a> </div>
                   <div class="media-body"> <a class="media-heading" href="#.">Nullam volutpat dui at 
                     a consequat enimiquet</a> <span>Posted on Sep 27</span> </div>
-                </li>
+                </li> -->
+                
+                {% endfor %}
               </ul>
               
               <!-- TAGS -->
-              <h5 class="shop-tittle margin-top-60 margin-bottom-30">PAUPLAR TAGS</h5>
+              <h5 class="shop-tittle margin-top-60 margin-bottom-30">{% trans 'PAUPLAR TAGS' %}</h5>
               <ul class="shop-tags">
-                <li><a href="#.">Towels</a></li>
-                <li><a href="#.">Chair</a></li>
+                {% for tag in tags %}
+                <li><a href="{% url 'blog_list_page' %}?tag={{tag.name}}">{{ tag.name }}</a></li>
+                <!-- <li><a href="#.">Chair</a></li>
                 <li><a href="#.">Bedsheets</a></li>
                 <li><a href="#.">Shoe</a></li>
                 <li><a href="#.">Curtains</a></li>
                 <li><a href="#.">Clocks</a></li>
                 <li><a href="#.">TV Cabinets</a></li>
                 <li><a href="#.">Best Seller</a></li>
-                <li><a href="#.">Top Selling</a></li>
+                <li><a href="#.">Top Selling</a></li> -->
+                {% endfor %}
               </ul>
               
               <!-- BRAND -->
-              <h5 class="shop-tittle margin-top-60 margin-bottom-30">archives</h5>
+              <h5 class="shop-tittle margin-top-60 margin-bottom-30">{% trans 'archives' %}</h5>
               <ul class="shop-cate">
-                <li><a href="#."> January 2015 </a></li>
-                <li><a href="#."> February 2015 </a></li>
-                <li><a href="#."> March 2015 </a></li>
-                <li><a href="#."> April 2015 </a></li>
-                <li><a href="#."> May 2015 </a></li>
+                
+                
+                  
+                <!-- <li><a href="?archive={{i.updated_at|date:'d'}}"> {{i.updated_at|date:'Y-m-d'}}</a></li> -->
+                <!-- <li><a href="?archive={{archive_count.updated_at}}"> May </a></li> -->
+                <!-- <li><a href="?archive=June-2023"> June </a></li> -->
+              {% for i in blog_archives %}
+                 
+                    
+              <li><a href="{% url 'blog_list_page' %}?archive={{i|date:'n'}}">{{i|date:'M Y'}} </a></li>
+              <!-- <li><a href="?archive={{i.created_at|date:'n'}}">{{i.updated_at}}</a></li> -->
+                    
+              {% endfor %}
+
+
+
+                <!-- <li><a href="?archive={{i.created_at|date:'Y-m-d'}}"> February 2015 <span>{{ i.num_archives }}</span> </a></li>
+                <li><a href="?archive={{archive.created_at|date:'Y-m-d'}}"> March 2015 </a></li>
+                <li><a href="?archive={{archive.created_at|date:'Y-m-d'}}"> April 2015 </a></li>
+                <li><a href="?archive={{archive.created_at|date:'Y-m-d'}}"> May 2015 </a></li> -->
+                
+                
               </ul>
               
               <!-- SIDE BACR BANER -->
@@ -245,7 +362,7 @@
       <div class="position-center-center">
         <div class="container">
           <div class="col-sm-6 center-block">
-            <h4>FOLLOW US @ INSTAGRAM</h4>
+            <h4>{% trans 'FOLLOW US @ INSTAGRAM' %}</h4>
             <p>Phasellus lacinia fermentutm bibendum. Interdum et malante ipuctus non. Nulla lacinia,
               eros vel fermentum consectetur, ris dolor in ex. </p>
           </div>
@@ -256,3 +373,4 @@
 
 
 {% endblock %}
+
