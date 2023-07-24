@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'drf_spectacular',
+    'django_celery_beat',
 
     
     
@@ -127,11 +128,14 @@ AUTHENTICATION_BACKENDS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+       
     ),
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 4,
     
 }
 
@@ -290,7 +294,7 @@ MESSAGE_TAGS = {
 
 # Social Auth Django ucun login/logout url's
 LOGIN_URL = 'login_page'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'profiles'
 LOGOUT_URL = 'logout'
 LOGOUT_REDIRECT_URL = ''
 # LOGOUT_REDIRECT_URL = 'logout'
@@ -354,3 +358,9 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'parvanayva@gmail.com'
 EMAIL_HOST_PASSWORD = 'tbvfozpvicsedomt'
 EMAIL_PORT = 587   # gmail portu 587-dir
+
+
+
+# Celery settings
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"

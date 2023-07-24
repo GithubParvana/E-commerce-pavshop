@@ -1,6 +1,7 @@
-from shopping_cart.models import Shipping_address, Billing_address, Order, OrderItem
+from shopping_cart.models import Shipping_address, Billing_address, Product, Order, OrderItem, Customer
 from django.http import JsonResponse
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.views import Response
 
 from shopping_cart.api.serializers import (
     Shipping_addressSerializer, 
@@ -8,17 +9,22 @@ from shopping_cart.api.serializers import (
     Shipping_addressCreateSerializer,
     Billing_addressCreateSerializer,
     OrderSerializer,
-    OrderCreateSerializer,
     OrderItemSerializer,
-    OrderItemCreateSerializer,
-    OrderItemUpdateSerializer
+    CustomerSerializer
+    # BasketSerializer,
+    # BasketItemSerializer
+    # OrderSerializer,
+    # OrderCreateSerializer,
+    # OrderItemSerializer,
+    # OrderItemCreateSerializer,
+    # OrderItemUpdateSerializer
     )
 
 
 # rest framework -> function-based
 from rest_framework.decorators import api_view
 from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
-
+from rest_framework.views import APIView
 
 
 
@@ -127,34 +133,100 @@ def bill_address(request):
 
 
 
-# GET ve POST -> 2-sini birlesdiren bir API View var
-class OrderCreateAPIView(ListCreateAPIView):
-    serializer_class = OrderCreateSerializer
-    queryset = Order.objects.all()
 
-
-
-# DELETE ve UPDATE(PUT VE PATCH) -> 2-sini birlesdiren bir API View var
-class OrderRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    serializer_class = OrderCreateSerializer
+class OrderAPIView(ListCreateAPIView):
+    serializer_class = OrderSerializer
     queryset = Order.objects.all()
     # permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
-
-
-# GET ve POST -> 2-sini birlesdiren bir API View var
-class OrderItemCreateAPIView(ListCreateAPIView):
-    serializer_class = OrderItemCreateSerializer
+class OrderItemAPIView(ListCreateAPIView):
+    serializer_class = OrderItemSerializer
     queryset = OrderItem.objects.all()
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
 
-# DELETE ve UPDATE(PUT VE PATCH) -> 2-sini birlesdiren bir API View var
-class OrderItemRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    serializer_class = OrderItemUpdateSerializer
-    queryset = OrderItem.objects.all()
-    # permission_classes = (IsAuthenticatedOrReadOnly,)
+# class BasketAPIView(APIView):
+#     serializer_class = BasketSerializer
+#     permission_classes = (IsAuthenticatedOrReadOnly,)
+    
+
+#     def get(self, request, *args, **kwargs):
+#         serializer = self.serializer_class(request.user.baskets)
+#         return Response(serializer.data, status = 201)
+
+
+#     def post(self, request, *args, **kwargs):
+#         quantity = request.data.get('quantity')
+#         product_id = request.data.get('product_id')
+#         product = Product.objects.filter(id=product_id).first()
+#         if product:
+#             basket_item = BasketItem.objects.get_or_create(product=product, user=request.user)
+#             basket_item2 = BasketItem.objects.get(product=product, user=request.user)
+#             basket_item2.quantity += quantity
+#             basket_item2.save()
+#             basket, created = Basket.objects.get_or_create(user=request.user)
+#             basket.items.add(basket_item2)
+#             arr = []
+#             for item in basket.items.all():
+#                 serializer = BasketItemSerializer(item)
+#                 arr.append(serializer.data)
+#             message = {'success': True, 'message' : 'Product added to your card.'}
+#             return Response(arr, status = 201, context={'request':request})
+#         message = {'success' : False, 'message': 'Product not found.'}
+#         return Response(message, status = 400)
+
+
+
+# class BasketItemDeleteAPIView(APIView):
+#     serializer_class = BasketItemSerializer
+#     permission_classes = (IsAuthenticatedOrReadOnly,)
+
+
+#     def post(self, request, *args, **kwargs):
+#         basket_item_id = request.data.get('basket_item_id')
+#         BasketItem.objects.get(id=basket_item_id).delete()
+
+
+    
+
+
+
+
+
+
+
+
+
+# # GET ve POST -> 2-sini birlesdiren bir API View var
+# class OrderCreateAPIView(ListCreateAPIView):
+#     serializer_class = OrderCreateSerializer
+#     queryset = Order.objects.all()
+
+
+
+# # DELETE ve UPDATE(PUT VE PATCH) -> 2-sini birlesdiren bir API View var
+# class OrderRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+#     serializer_class = OrderCreateSerializer
+#     queryset = Order.objects.all()
+#     # permission_classes = (IsAuthenticatedOrReadOnly,)
+
+
+
+
+# # GET ve POST -> 2-sini birlesdiren bir API View var
+# class OrderItemCreateAPIView(ListCreateAPIView):
+#     serializer_class = OrderItemCreateSerializer
+#     queryset = OrderItem.objects.all()
+
+
+
+# # DELETE ve UPDATE(PUT VE PATCH) -> 2-sini birlesdiren bir API View var
+# class OrderItemRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+#     serializer_class = OrderItemUpdateSerializer
+#     queryset = OrderItem.objects.all()
+#     # permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
 

@@ -11,6 +11,8 @@ from decimal import Decimal
 # from djmoney.models.validators import MaxMoneyValidator, MinMoneyValidator
 from djmoney.contrib.exchange.models import convert_money
 
+from django.db.models import Avg
+
 from django.urls import reverse, reverse_lazy
 
 from django.utils.html import mark_safe
@@ -164,7 +166,7 @@ class Product(AbstractModel):
     # status = models.BooleanField(default=True)
     slug = models.SlugField(null=True, blank=True, max_length=255) 
 
-    money = models.DecimalField(max_digits=6, decimal_places=2)
+    money = models.DecimalField(max_digits=5, decimal_places=2)
 
     # money = MoneyField( 
     #     max_digits=14, 
@@ -219,7 +221,7 @@ class Product(AbstractModel):
         discount_fixed = sum(d.value for d in self.discount.all() if d.is_percent is False and d.is_active)
 
         if discount_percent:
-            return self.money - (self.money * discount_percent) // 100
+            return float(self.money - (self.money * discount_percent) / 100)
         elif discount_fixed:
             return self.money - discount_fixed
         return self.money
@@ -244,7 +246,13 @@ class Product(AbstractModel):
             for i in range(self.quantity, 0, -1):
                 arr.append(i)
         return arr
+    
 
+
+    def average_rating(self):
+        if Review.objects.filter(product=self).aggregate(Avg('rating'))['rating__avg']:
+            return '%.1f' % (Review.objects.filter(product=self).aggregate(Avg('rating'))['rating__avg'])
+        return 0
 
     # def property_values_name(self):
     #     return self.property_values.name
@@ -406,13 +414,12 @@ class ProductImages(models.Model):
 
 
 
-
 class Rating(models.Model):
     rate = models.IntegerField()
 
 
     def __str__(self):
-        return f"{self.product_version}: {self.rating}"
+        return str(self.rate)
     
 
 

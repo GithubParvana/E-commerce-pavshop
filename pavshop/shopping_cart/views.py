@@ -18,6 +18,10 @@ from authentication import views
 from products.models import *
 from django.http import JsonResponse
 import json
+import datetime
+
+from django.views.decorators.csrf import csrf_exempt
+
 
 from django.contrib.auth import get_user_model, authenticate
 
@@ -27,7 +31,7 @@ User = get_user_model()
 
 
 # Generic View import'lar
-from django.views.generic import CreateView, FormView, View,TemplateView
+from django.views.generic import CreateView, FormView, View,TemplateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.base import ContextMixin
@@ -38,83 +42,64 @@ from django.views.generic.base import ContextMixin
 
 # Create your views here.
 def shopping_cart_page(request):
-    orders = Order.objects.all()
-    items = OrderItem.objects.all()
-
+    
+    if request.user.is_authenticated:
+        Customer.objects.get_or_create(user=request.user)
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        items = order.order_items.all()
+        cartItems = order.get_cart_items
+        print(cartItems, '111111111111')
+    else:
+        items = []
+        order = {'get_grand_total' : 0, 'get_cart_items' : 0}
+        cartItems = order['get_cart_items']
+        print(cartItems, '222222222222222')
+       
+    top_rated = Product.objects.annotate(Count("reviews"))
+    rate_list = [i for i in top_rated if float(i.average_rating()) >= 3][:3]
 
     context = {
-        'orders' : orders,
-        'items' : items,
-    }
-    
-    print(items, 'itemssssss')
-    print(orders, 'ordersssss')
+        'items' : items, 
+        'order' : order,
+        'cartItems' : cartItems,
+        'top_rated' : top_rated,
+        'rate_list' : rate_list
+        }
 
     return render(request, 'shopping-cart.html', context)
 
 
 
-def add_to_cart(request):
-    data = json.loads(request.body)
-    productsid = data["id"]
-    product = Product.objects.get(id=productsid)
-    
-    if request.user.is_authenticated:
-        order, created_at = Order.objects.get_or_create(user=request.user)
-        order_items, created_at = OrderItem.objects.get_or_create(order=order, product=product)
-        order_items.quantity += 1
-        order_items.save()
-        print(order_items)
-    return JsonResponse('It is working', safe=False)
 
 
 
 
-
-def checkout(request):
-    if request.user.is_authenticated:
-        user = request.user
-        order, created = Order.objects.get_or_create(user=user, complete=False)
-        items = order.orderitem_set.all()
-        # cartItems = order['get_cart_items']
-    else:
-        items = []
-        order = {'get_cart_total': 0, 'get_cart_items':0}
-        # cartItems = order['get_cart_items']
-
-    context = {'items':items, 'order':order}
-    return render(request, 'checkout.html', context)
-
-
-
-
-
-
-
-
+@csrf_exempt
 def updateItem(request):
-    # data = json.loads(request.body)
-    # productsId = data['productsId']
-    # action = data['action']
+    data = json.loads(request.body)
+    productId = data['productId']
+    action = data['action']
 
-    # print('Action:', action)
-    # print('productsId:', productsId)
+    print('Action:', action)
+    print('productId:', productId)
 
-    # user = request.user.user
-    # product = Product.objects.get(id=productsId)
-    # order, created = Order.objects.get_or_create(user=user, complete=False)
 
-    # orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
+    Customer.objects.get_or_create(user=request.user)
+    customer = request.user.customer
+    product = Product.objects.get(id=productId)
+    order, created = Order.objects.get_or_create(customer=customer, complete=False)
+    orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
 
-    # if action == 'add':
-    #     orderItem.quantity = (orderItem.quantity + 1)
-    # elif action == 'remove':
-    #     orderItem.quantity = (orderItem.quantity - 1)
-    
-    # orderItem.save()
+    if action == 'add':
+        orderItem.quantity = (orderItem.quantity + 1)
+    elif action == "remove":
+        orderItem.quantity = (orderItem.quantity - 1)
 
-    # if orderItem.quantity <= 0:
-    #     orderItem.delete()
+    orderItem.save()
+
+    if orderItem.quantity <= 0 or action == "delete":
+        orderItem.delete()
 
     return JsonResponse('Item was added', safe=False)
 
@@ -168,15 +153,65 @@ def checkout_page(request):
             form = Billing_addressForm()
 
 
+
+    if request.user.is_authenticated:
+        Customer.objects.get_or_create(user=request.user)
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        items = order.order_items.all()
+        cartItems = order.get_cart_items
+
+    else:
+        items = []
+        order = {'get_grand_total' : 0, 'get_cart_items' : 0}
+        cartItems = order['get_cart_items']
+
+    
+    top_rated = Product.objects.annotate(Count("reviews"))
+    rate_list = [i for i in top_rated if float(i.average_rating()) >= 3][:3]
+    
+        
+
     context = {
         'shipform' : form,  # key hisse, .html'de yazilir, value hisse ise views.py'da qeyd olunur
-        'billform' : form
+        'billform' : form,
+        'items' : items,
+        'order' : order,
+        'cartItems' : cartItems,
+        'top_rated' : top_rated,
+        'rate_list' : rate_list
     }
 
 
 
     return render(request, 'checkout.html', context=context)
 
+
+
+@csrf_exempt
+def processOrder(request):
+    print('Data:', request.body)
+    transaction_id = datetime.datetime.now().timestamp()
+    data = json.loads(request.body)
+
+    # print(transaction_id)
+    print(data)
+
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        # total = data['form']['total']
+        order.transaction_id = transaction_id
+
+        # if total == order.get_grand_total:
+        
+        if order.get_grand_total:
+            order.complete = True
+        order.save()
+    else:
+        print('User is not logged in.. ')
+        
+    return JsonResponse('Payment complete!', safe=False)
 
 
 
@@ -233,5 +268,7 @@ class CheckoutView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
+
+
 
 

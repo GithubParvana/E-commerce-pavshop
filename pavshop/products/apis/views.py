@@ -21,6 +21,14 @@ from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIVie
 # from rest_framework.pagination import PageNumberPagination
 
 
+# Pagination
+from rest_framework.viewsets import ModelViewSet
+from products.paginations import CustomPagination
+
+
+# Search Filter in drf
+from rest_framework.filters import SearchFilter
+
 
 # # GET 
 # def categories(request):
@@ -96,6 +104,17 @@ def tags(request):
     return JsonResponse(data=serializer.data, safe=False)
 
 
+
+
+
+# GET ve POST -> 2-sini birlesdiren bir API View var
+class BrandCreateAPIView(ListCreateAPIView):
+    serializer_class = BrandSerializer
+    queryset = Brand.objects.all()
+
+
+
+
 # GET 
 def brands(request):
     brand_list = Brand.objects.all()
@@ -151,6 +170,9 @@ class ProductCreateAPIView(ListCreateAPIView):
     queryset = Product.objects.all()
     # pagination_class = ProductSetPaginationSerializer
     # paginator = 6
+    pagination_class = CustomPagination
+    filter_backends = [SearchFilter]
+    search_fields = ['title']
     
 
 
@@ -158,6 +180,10 @@ class ProductCreateAPIView(ListCreateAPIView):
         if self.request.method == 'GET':
             return ProductSerializer
         return self.serializer_class
+
+
+    
+
 
     
     

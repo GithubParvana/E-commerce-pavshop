@@ -15,8 +15,8 @@ urlpatterns = [
     # path('stories/', stories, name='stories'),
     path('stories/', StoryCreateAPIView.as_view(), name='stories'),
 
-    path('tags/', tags, name='tags'),
-    path('tags/<int:pk>/', tag_read_update, name='tag_read_update'),
+    path('tag/', tags, name='tag'),
+    path('tag/<int:pk>/', tag_read_update, name='tag_read_update'),
     path('stories/<int:pk>/', story_read_update, name='story_read_update'),
     # path('tags/<int:pk>/', tag_read_update, name='tag_read_update'),
 

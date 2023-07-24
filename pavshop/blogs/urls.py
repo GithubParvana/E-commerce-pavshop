@@ -18,7 +18,7 @@ urlpatterns = [
     path('update-blog/<int:pk>/', UpdateStory.as_view(), name='update_blog_page'),
 
 
-    # path('create-blog/', create_blog_page, name='create_blog_page'),
+    # path('create-blogs/', create_blog_page, name='create_blog_page'),
     path('create-blog/',  CreateStory.as_view(), name='create_blog_page'),
 
 

@@ -31,6 +31,57 @@
 <!-- JavaScripts -->
 <script src="{% static 'js/modernizr.js' %}"></script>
 
+
+<script type="text/javascript">
+  var user = '{{request.user}}'
+
+  
+</script>
+
+
+
+<style>
+.star-rating {
+  display: inline-flex;
+}
+
+.star-label i {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.star-label i:hover,
+.star-label i:hover ~ i{
+  color: orange;
+}
+
+
+
+.star-label input[type="radio"] {
+  display: none;
+}
+
+/* Use the appropriate icon classes for empty and filled stars */
+.star-label i.fa-star {
+  color: #ddd; /* Color for empty stars */
+}
+
+.star-label input[type="radio"]:checked + i.fa-star {
+  color: gold; /* Color for filled stars */
+}
+
+
+.color-star {
+  color: orange;
+}
+
+</style>
+
+
+
+
 <!-- Online Fonts -->
 <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900' rel='stylesheet' type='text/css'>
@@ -161,18 +212,22 @@
                     <!-- TOp Rate Products -->
                     <div class="col-md-4">
                       <h6>{% trans 'TOp Rate Products' %}</h6>
+                      
                       <div class="top-rated">
                         <ul>
+                          {% for i in rate_list %}
+                          
                           <li>
                             <div class="media-left">
-                              <div class="cart-img"> <a href="#"> <img class="media-object img-responsive" src="{% static 'images/cart-img-1.jpg' %}" alt="..."> </a> </div>
+                              <div class="cart-img"> <a href="#"> <img class="media-object img-responsive" src="{{ i.image.url }}" alt="..."> </a> </div>
                             </div>
                             <div class="media-body">
-                              <h6 class="media-heading">WOOD CHAIR</h6>
-                              <div class="stars"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div>
-                              <span class="price">129.00 USD</span> </div>
+                              <h6 class="media-heading">{{ i.title }}</h6>
+                              <div class="stars"> {{ i.average_rating }}<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div>
+                              <span class="price">{{ i.money }}USD</span> </div>
                           </li>
-                          <li>
+                          
+                          <!-- <li>
                             <div class="media-left">
                               <div class="cart-img"> <a href="#"> <img class="media-object img-responsive" src="{% static 'images/cart-img-2.jpg' %}" alt="..."> </a> </div>
                             </div>
@@ -180,8 +235,8 @@
                               <h6 class="media-heading">STOOL</h6>
                               <div class="stars"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div>
                               <span class="price">129.00 USD</span> </div>
-                          </li>
-                          <li>
+                          </li> -->
+                          <!-- <li>
                             <div class="media-left">
                               <div class="cart-img"> <a href="#"> <img class="media-object img-responsive" src="{% static 'images/cart-img-3.jpg' %}" alt="..."> </a> </div>
                             </div>
@@ -189,9 +244,11 @@
                               <h6 class="media-heading">WOOD SPOON</h6>
                               <div class="stars"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div>
                               <span class="price">129.00 USD</span> </div>
-                          </li>
+                          </li> -->
+                          {% endfor %}
                         </ul>
                       </div>
+                      
                     </div>
                     
                     <!-- New Arrival -->
@@ -260,27 +317,36 @@
               </li>
               
               <!-- USER BASKET -->
-              <li class="dropdown user-basket"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><i class="icon-basket-loaded"></i> </a>
+              
+              <li class="dropdown user-basket"> <a href="#" id="cart-total" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><i class="icon-basket-loaded"></i> {{ cartItems }} </a>
                 <ul class="dropdown-menu">
+                  
+                  
                   <li>
                     <div class="media-left">
-                      <div class="cart-img"> <a href="#"> <img class="media-object img-responsive" src="{% static 'images/cart-img-1.jpg' %}" alt="..."> </a> </div>
+                      <!-- <div class="cart-img"> <a href="#"> <img class="media-object img-responsive" src="{% static 'images/cart-img-1.jpg' %}" alt="..."> </a> </div> -->
                     </div>
                     <div class="media-body">
-                      <h6 class="media-heading">WOOD CHAIR</h6>
-                      <span class="price">129.00 USD</span> <span class="qty">QTY: 01</span> </div>
+                      <!-- <h6 class="media-heading">WOOD CHAIR</h6> -->
+                      <!-- <span class="price">129.00 USD</span> <span class="qty">QTY: 01</span> </div> -->
                   </li>
+
                   <li>
                     <div class="media-left">
-                      <div class="cart-img"> <a href="#"> <img class="media-object img-responsive" src="{% static 'images/cart-img-2.jpg' %}" alt="..."> </a> </div>
+                      <!-- <div class="cart-img"> <a href="#"> <img class="media-object img-responsive" src="{% static 'images/cart-img-2.jpg' %}" alt="..."> </a> </div> -->
                     </div>
                     <div class="media-body">
-                      <h6 class="media-heading">WOOD STOOL</h6>
-                      <span class="price">129.00 USD</span> <span class="qty">QTY: 01</span> </div>
+                      <!-- <h6 class="media-heading">WOOD STOOL</h6> -->
+                      <!-- <span class="price">129.00 USD</span> <span class="qty">QTY: 01</span> </div> -->
                   </li>
+
                   <li>
-                    <h5 class="text-center">SUBTOTAL: 258.00 USD</h5>
+                    <!-- <h5 class="text-center">SUBTOTAL: 258.00 USD</h5> -->
+                    <h5 class="text-center">Cart details</h5>
+
                   </li>
+                  
+
                   <li class="margin-0">
                     <div class="row">
                       <div class="col-xs-6"> <a href="{% url 'shopping_cart_page' %}" class="btn">{% trans 'VIEW CART' %}</a></div>
@@ -427,7 +493,9 @@
   <script src="{% static 'js/main.js' %}"></script>
   <script src="{% static 'js/newsletter.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
-  <script src="{% static 'js/scripts.js' %}"></script>
+  <!-- <script src="{% static 'js/scripts.js' %}"></script> -->
+  <!-- <script src="{% static 'js/custom.js' %}"></script> -->
+
 
 
 

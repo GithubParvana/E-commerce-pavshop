@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, resolve_url
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -70,14 +70,24 @@ def login_page(request):
 class UserLoginView(LoginView):
     template_name = 'login.html'
     form_class = LoginForm
+   
+    
+
+    # success_url = reverse_lazy('profiles')
     
 
     def form_invalid(self, form):
         messages.add_message(self.request, messages.ERROR, "User not found!  Password or Username is wrong")
         return redirect('login_page')
     
-
-
+    
+    def get_default_redirect_url(self):
+        """Return the default redirect URL."""
+        if self.next_page:
+            return resolve_url('profiles')
+        else:
+            return resolve_url(settings.LOGIN_REDIRECT_URL)
+    
   
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs)
@@ -222,7 +232,7 @@ class ProfileView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["storys"] = Story.objects.filter(author = request.user.id)
+        context["storys"] = Story.objects.filter(author = self.request.user.id)
         context["storys_count"] = context["storys"].count
         return context
     

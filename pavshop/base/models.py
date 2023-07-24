@@ -50,7 +50,7 @@ class Contact(AbstractModel):
 
 
     def __str__(self):
-        return f"{self.full_name} => {self.email} => {self.subject} => {self.message} => {self.created_at}"
+        return f"{self.full_name} => {self.email} => {self.subject} => {self.message} => {self.created_at} => {self.phone}"
 
 
 

@@ -63,6 +63,21 @@ class CategoryRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 
 
+# GET ve POST -> 2-sini birlesdiren bir API View var
+class TagCreateAPIView(ListCreateAPIView):
+    serializer_class = TagSerializer
+    queryset = Tag.objects.all()
+
+
+
+# DELETE ve UPDATE(PUT VE PATCH) -> 2-sini birlesdiren bir API View var
+class TagRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    serializer_class = TagSerializer
+    queryset = Tag.objects.all()
+
+
+
+
 
 # GET ve POST @api_views ile
 @api_view(http_method_names=['GET', 'POST'])
@@ -112,8 +127,8 @@ def comments(request):
 
 
 # POST 
-class StoryCreateAPIView(CreateAPIView):
-    serializer_class = StoryCreateSerializer
+# class StoryCreateAPIView(CreateAPIView):
+#     serializer_class = StoryCreateSerializer
 
 
 # # GET  - gerek urls.py da elave bir route yaradaq, o da hansi yuxarida ise o isleyecek, elverisli deyil get ve post ucun API ayri yazmaq
@@ -140,6 +155,7 @@ class StoryCreateAPIView(ListCreateAPIView):
 # DELETE ve UPDATE(PUT VE PATCH) -> 2-sini birlesdiren bir API View var
 class StoryRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = StoryCreateSerializer
+    # permission_classes = (IsAuthenticatedOrReadOnly,)
     queryset = Story.objects.all()
 
 

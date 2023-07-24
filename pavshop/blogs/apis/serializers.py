@@ -25,7 +25,7 @@ class TagSerializer(serializers.ModelSerializer):
             'name',
             'slug',
         )
-
+        ref_name = 'Tag Blog'
 
 
 # GET

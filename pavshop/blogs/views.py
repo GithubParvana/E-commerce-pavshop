@@ -16,6 +16,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from dateutil import parser
 from base.models import AbstractModel
+from products.models import Product
 # from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.decorators import login_required
@@ -88,6 +89,8 @@ class StoryListView(ListView):
         context["blog_archives"] = Story.objects.filter(updated_at__month__lt=context["current_date"]).order_by('-updated_at').dates('updated_at', 'month')
         context["story_count"] = Category.objects.all()
         context["tags"] = Tag.objects.all()
+        context["top_rated"] = Product.objects.annotate(Count("reviews"))
+        context["rate_list"] = [i for i in context["top_rated"] if float(i.average_rating()) >= 3][:3]
         
 
         return context
@@ -133,6 +136,10 @@ class UpdateStory(LoginRequiredMixin, UpdateView):
     template_name = 'create-blog.html'
     form_class = CreateStoryForm
     model = Story
+    # success_url = reverse_lazy('blog_list_page')
+
+
+    
     
 
 
@@ -177,9 +184,10 @@ class StoryDetailView(FormMixin, DetailView):
     def get_queryset(self):
         queryset = super().get_queryset()
         archive = self.request.GET.get('archive')
+
         
         if archive:
-            queryset = queryset.filter(updated_at__month=archive).order_by('-updated_at').all()        
+            queryset = queryset.filter(updated_at__month=archive).order_by('-updated_at').all()     
         return queryset
 
 

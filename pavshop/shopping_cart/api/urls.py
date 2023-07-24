@@ -6,10 +6,8 @@ from shopping_cart.api.views import (
     Shipping_addressCreateAPIView,
     Shipping_addressRetrieveUpdateDestroyAPIView,
     Billing_addressRetrieveUpdateDestroyAPIView,
-    OrderCreateAPIView,
-    OrderItemCreateAPIView,
-    OrderItemRetrieveUpdateDestroyAPIView,
-    OrderRetrieveUpdateDestroyAPIView
+    OrderAPIView,
+    OrderItemAPIView
     
     
     )
@@ -24,10 +22,9 @@ urlpatterns = [
     path('billing/', Billing_addressCreateAPIView.as_view(), name='bill_address'),
     path('billing/<int:pk>/', Billing_addressRetrieveUpdateDestroyAPIView.as_view(), name='bill_address'),
 
-    path('orders/', OrderCreateAPIView.as_view(), name='orders'),
-    path('orders-items/', OrderItemCreateAPIView.as_view(), name='order_items'),
-    path('orders/items/<int:pk>/', OrderItemRetrieveUpdateDestroyAPIView.as_view(), name='order_item_update'),
-    path('orders/<int:pk>/', OrderRetrieveUpdateDestroyAPIView.as_view(), name='order_update')
+    path('orders/', OrderAPIView.as_view(), name='orders'),
+    path('order-items/', OrderItemAPIView.as_view(), name='order_items')
+    
 
 
 ]

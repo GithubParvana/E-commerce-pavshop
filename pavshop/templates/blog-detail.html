@@ -44,7 +44,7 @@
               <div class="post-tittle left"> <a href="{% url 'update_blog_page' story_details.id %}" class="tittle"> {{ story_details.title }} </a> 
 
                 <!-- Post Info --> 
-                <span><i class="primary-color icon-user"></i>{{story_details.author}}</span> <span><i class="primary-color icon-calendar"></i> {{ story_details.created_at }} </span> <span><i class="primary-color icon-bubble"></i>({{comments.count}}) {{reviews_count}}</span> <span><i class="primary-color icon-tag"></i> {{ story_details.category.name }} </span> </div>
+                <span><i class="primary-color icon-user"></i>{{story_details.author}}</span> <span><i class="primary-color icon-calendar"></i> {{ story_details.created_at }} </span> <span><i class="primary-color icon-bubble"></i>{{reviews_count}}</span> <span><i class="primary-color icon-tag"></i> {{ story_details.category.name }} </span> </div>
               <!-- Post Content -->
               <div class="text-left">
 
@@ -86,14 +86,16 @@
                 <!-- Tags -->
                 <div class="row margin-top-50">
                   <div class="col-md-8">
-                    <h5 class="shop-tittle">{% trans 'PRODUCT TAGS' %}</h5>
+                    <h5 class="shop-tittle">{% trans 'Blog TAGS' %}</h5>
                     <ul class="shop-tags padding-left-15">
-                      <li><a href="#.">Towels</a></li>
-                      <li><a href="#.">Chair</a></li>
+                      {% for tag in tags %}
+                      <li><a href="{% url 'blog_list_page' %}?tag={{tag.name}}">{{ tag.name }}</a></li>
+                      <!-- <li><a href="#.">Chair</a></li>
                       <li><a href="#.">Bedsheets</a></li>
                       <li><a href="#.">Shoe</a></li>
                       <li><a href="#.">Curtains</a></li>
-                      <li><a href="#.">Clocks</a></li>
+                      <li><a href="#.">Clocks</a></li> -->
+                      {% endfor %}
                     </ul>
                   </div>
                   
@@ -333,7 +335,7 @@
                     <!-- Tittle -->
                     <div class="post-tittle left"> <a href="{{stories.get_absolute_url}}" class="tittle">{{ stories.title }}</a> 
                       <!-- Post Info --> 
-                      <span><i class="primary-color icon-user"></i>{{ stories.author }}</span> <span><i class="primary-color icon-calendar"></i>{{ stories.updated_at }}</span> <span><i class="primary-color icon-bubble"></i> 05</span> <span><i class="primary-color icon-tag"></i> Furniture</span> </div>
+                      <span><i class="primary-color icon-user"></i>{{ stories.author }}</span> <span><i class="primary-color icon-calendar"></i>{{ stories.updated_at }}</span> <span><i class="primary-color icon-bubble"></i>{{stories.num_of_reviews}}</span> <span><i class="primary-color icon-tag"></i> {{ stories.category.name }}</span> </div>
                     <!-- Post Content -->
                     <div class="text-left">
                       <p>{{ stories.description|safe|truncatewords:'50'|linebreaks }}</p>
@@ -451,7 +453,7 @@
               </ul>
               
               <!-- SIDE BACR BANER -->
-              <div class="side-bnr margin-top-50"> <img class="img-responsive" src="{% static 'images/sidebar-bnr.jpg' %}" alt="">
+              <div class="side-bnr margin-top-50"> <img class="img-responsive" src="{% static 'images/back_images/side-banner-img.jpg' %}" alt="">
                 <div class="position-center-center"> <span class="price"><small>$</small>299</span>
                   <div class="bnr-text">look
                     hot
@@ -468,10 +470,10 @@
     <!-- Culture BLOCK -->
     <section class="cultur-block">
       <ul>
-        <li> <img src="{% static 'images/cultur-img-1.jpg' %}" alt="" > </li>
-        <li> <img src="{% static 'images/cultur-img-2.jpg' %}" alt="" > </li>
-        <li> <img src="{% static 'images/cultur-img-3.jpg' %}" alt="" > </li>
-        <li> <img src="{% static 'images/cultur-img-4.jpg' %}" alt="" > </li>
+        <li> <img src="{% static 'images/culture_images/culture-image-1.jpg' %}" alt="" > </li>
+        <li> <img src="{% static 'images/culture_images/culture-image-2.jpg' %}" alt="" > </li>
+        <li> <img src="{% static 'images/culture_images/culture-image-3.jpg' %}" alt="" > </li>
+        <li> <img src="{% static 'images/culture_images/culture-image-4.jpg' %}" alt="" > </li>
       </ul>
       
       <!-- Culture Text -->

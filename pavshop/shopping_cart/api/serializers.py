@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from shopping_cart.models import Shipping_address, Billing_address, Order, OrderItem
+from shopping_cart.models import Shipping_address, Billing_address, Customer, Order, OrderItem 
 from products.apis.serializers import ProductSerializer
 
 # GET
@@ -82,73 +82,40 @@ class Billing_addressCreateSerializer(serializers.ModelSerializer):
 
 
 
-# GET
+
+
+
+class CustomerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = (
+            'id',
+            'user',
+            'name',
+            'email'
+        )
+
+
+
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = (
             'id',
-            # 'user',
-            'user_name',
-            # 'complete',
+            'customer',
+            'complete',
             'transaction_id'
         )
 
 
 
-# POST
-class OrderCreateSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(read_only=True)
-    class Meta:
-        model = Order
-        fields = (
-            'id',
-            'user',
-            # 'complete',
-            'transaction_id'
-        )
-
-
-    def validate(self, attrs):
-        request = self.context['request']
-        attrs['user'] = request.user
-        return super().validate(attrs)
-
-
-
-# GET
 class OrderItemSerializer(serializers.ModelSerializer):
-    product = serializers.CharField(source='product.title')
-    class Meta:
-        model = OrderItem
-        fields = (
-            'product',
-            'order',
-            'quantity',
-
-        )
-
-
-
-# POST
-class OrderItemCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = OrderItem
-        fields = (
-            'product',
-            'order',
-            'quantity',
-
-        )
-
-
-
-class OrderItemUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
         fields = (
             'id',
             'product',
             'order',
-            'quantity'
+            'quantity',
+            
         )

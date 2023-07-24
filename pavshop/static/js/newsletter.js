@@ -4,7 +4,7 @@ newsletterForm.addEventListener('submit', function(e){
     let email = document.getElementById('newsletter-email')
     console.log(email.value)
 
-    fetch('http://127.0.0.1:8000/api/newsletter/', {
+    fetch(`${location.origin}/api/newsletter/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

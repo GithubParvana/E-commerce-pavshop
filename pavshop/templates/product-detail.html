@@ -44,7 +44,7 @@
                 <ul class="slides">
                   
                   {% for img in images %}
-                  <li data-thumb="{{ img.image.url }}"> <img class="img-responsive" src="{{ img.image.url }}"  alt=""> </li>
+                  <li data-thumb="{{ img.image.url }}"> <img class="img-responsive" src="{{ img.image.url }}"  alt="" style="width: 100%;"> </li>
                   {% endfor %}
                   <!-- <li data-thumb="{% static 'images/large-img-3.jpg' %}"> <img class="img-responsive" src="{% static 'images/large-img-3.jpg' %}"  alt=""> </li>
                   <li data-thumb="{% static 'images/large-img-3.jpg' %}"> <img class="img-responsive" src="{% static 'images/large-img-3.jpg' %}"  alt=""> </li> -->
@@ -63,7 +63,7 @@
                {% if discounts.is_active is False %}
                <span>No Discount</span>
                {% else %}
-              <span>Discount: {{products.apply_discount}}<small>$</small></span>
+              <span class="price">Discount: {{products.apply_discount}}<small>$</small></span>
                {% endif %}
 
                
@@ -101,7 +101,7 @@
                     <div class="quinty"> 
                       <!-- QTY -->
                       
-                      <select class="selectpicker">
+                      <!-- <select class="selectpicker">
                          {% if products.quantity %}
                             {% for i in products.get_quantity %}
                             <option value="{{ choice.1 }}">{{ i }}</option>
@@ -110,11 +110,8 @@
                         <option>No stock</option>
                         {% endif %}
                         
-                      
-                        <!-- <option>1</option>
-                        <option>2</option>
-                        <option>3</option> -->
-                      </select>
+                
+                      </select> -->
                     </div>
                   </li>
                   
@@ -137,11 +134,25 @@
                     </ul>
                   </li>
                   
+                  {% if products.in_stock is True %}
                   <!-- ADD TO CART -->
-                  <div class="action">
-                    <button data-product="{{products.id}}" data-action="add" type="button" class="btn add-btn update-cart"><li>{% trans 'ADD TO CART' %}</li></button>
+                  <div class="action" >
+                    <!-- <button id="add-to-basket" data="{{object.id}}"  type="button" class="btn add-btn btn-cart"><li>{% trans 'ADD TO CART' %}</li></button> -->
+                    <!-- <li class="col-xs-6"> <a href="#." class="btn update-cart">ADD TO CART</a> </li> -->
+                    <button data-product="{{products.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
 
                   </div>
+                  {% else %}
+                  <h3>Product Not in stock!!!</h3>
+
+                  <div class="action" >
+                    <!-- <button id="add-to-basket" data="{{object.id}}"  type="button" class="btn add-btn btn-cart"><li>{% trans 'ADD TO CART' %}</li></button> -->
+                    <!-- <li class="col-xs-6"> <a href="#." class="btn update-cart">ADD TO CART</a> </li> -->
+                    <button data-product="{{products.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart" disabled>Add to Cart</button>
+
+                  </div>
+
+                  {% endif %}
                   
                   
                   <!-- LIKE -->
@@ -199,7 +210,7 @@
               <ul>
                 {% if products.in_stock %}
                 <li><strong>{% trans 'In stock' %} &#x2705;</strong></li>
-                {{ products.quantity }}
+                <!-- {{ products.quantity }} -->
                 {% else %}
                 <li style="color: red;">{% trans 'Not in stock' %}</li>
                 {% endif %}
@@ -266,6 +277,7 @@
                
               {% endif %}
               {% endfor %}
+              <h6>Product rating: {{ products.average_rating }} <span class="fa fa-star color-star"></span> </h6>
               
               <!-- REVIEW PEOPLE 1 -->
               
@@ -314,7 +326,73 @@
                   </li>
                   <li class="col-sm-6"> 
                     <!-- Rating Stars -->
-                    <div class="stars"> <span>YOUR RATING</span> <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+                    <div class="stars star-rating"> <span>YOUR RATING</span>
+
+                     
+                      
+                      
+                      <!-- <input type="radio" name="rating" value="5" required class="stars">
+                      <input type="radio" name="rating" value="4" required class="stars">
+                      <input type="radio" name="rating" value="3" required class="stars">
+                      <input type="radio" name="rating" value="2" required class="stars">
+                      <input type="radio" name="rating" value="1" required class="stars"> -->
+
+
+
+                      
+                    
+                      <!-- <i class="fa fa-star {% if products.average_rating > 0 %} checked {% endif %}" aria-hidden="true" class="stars"></i>
+                      <i class="fa fa-star {% if products.average_rating > 1 %} checked {% endif %}" aria-hidden="true" class="stars"></i>
+                      <i class="fa fa-star {% if products.average_rating > 2 %} checked {% endif %}" aria-hidden="true" class="stars"></i>
+                      <i class="fa fa-star {% if products.average_rating > 3 %} checked {% endif %}" aria-hidden="true" class="stars"></i>
+                      <i class="fa fa-star {% if products.average_rating > 4 %} checked {% endif %}" aria-hidden="true" class="stars"></i> -->
+                    
+
+                      <!-- <span title="{{products.average_rating}}/5"></span> -->
+                      <label class="star-label">
+                        <input type="radio" name="rating" value="1" class="stars">
+                        <i class="fa fa-star {% if products.average_rating > 0 %} checked {% endif %}"></i>
+                      </label>
+                      <label class="star-label">
+                        <input type="radio" name="rating" value="2" class="stars">
+                        <i class="fa fa-star {% if products.average_rating > 1 %} checked {% endif %}"></i>
+                      </label>
+                      <label class="star-label">
+                        <input type="radio" name="rating" value="3" class="stars">
+                        <i class="fa fa-star {% if products.average_rating > 2 %} checked {% endif %}"></i>
+                      </label>
+                      <label class="star-label">
+                        <input type="radio" name="rating" value="4" class="stars">
+                        <i class="fa fa-star {% if products.average_rating > 3 %} checked {% endif %}"></i>
+                      </label>
+                      <label class="star-label">
+                        <input type="radio" name="rating" value="5" class="stars">
+                        <i class="fa fa-star {% if products.average_rating > 4 %} checked {% endif %}"></i>
+                      </label>
+                      <!-- Add more label elements for additional stars -->
+                    
+
+                      
+
+
+            <!-- <div class="star-rating">
+              <div class="star-rating__wrap">
+                <input class="star-rating__input" id="star-rating-5" type="radio" name="rating" value="5">
+                <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-5" title="5 out of 5 stars"></label>
+                <input class="star-rating__input" id="star-rating-4" type="radio" name="rating" value="4">
+                <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-4" title="4 out of 5 stars"></label>
+                <input class="star-rating__input" id="star-rating-3" type="radio" name="rating" value="3">
+                <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-3" title="3 out of 5 stars"></label>
+                <input class="star-rating__input" id="star-rating-2" type="radio" name="rating" value="2">
+                <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-2" title="2 out of 5 stars"></label>
+                <input class="star-rating__input" id="star-rating-1" type="radio" name="rating" value="1">
+                <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-1" title="1 out of 5 stars"></label>
+              </div>
+            </div> -->
+
+                    
+                    </div>
+
                   </li>
                   <li class="col-sm-6">
                     <button type="submit" class="btn btn-dark btn-small pull-right no-margin">{% trans 'POST REVIEW' %}</button>

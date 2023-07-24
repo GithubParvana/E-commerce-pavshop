@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from products.models import Category, Tag, Brand, PropertyValue, Product, Review
 
-# from rest_framework.pagination import PageNumberPagination
+from rest_framework.pagination import PageNumberPagination
 
 
 class CategorySerializer(serializers.ModelSerializer):

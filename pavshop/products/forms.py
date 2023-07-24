@@ -16,6 +16,7 @@ class ReviewForm(forms.ModelForm):
             # 'name',
             # 'email',
             'review',
+            'rating'
 
         )
         

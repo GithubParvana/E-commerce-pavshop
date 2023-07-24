@@ -40,7 +40,7 @@
               <!-- ESTIMATE SHIPPING & TAX -->
               <div class="col-sm-7">
                 <h6>LOGIN YOUR ACCOUNT</h6>
-                <form method="POST">
+                <form method="POST" id="loginForm">
                   
                   {% csrf_token %}
                   
@@ -50,7 +50,7 @@
                     <!-- Name -->
                     <li class="col-md-12">
                       <label> USERNAME
-                        <!-- <input type="text" name="first-name" value="" placeholder="Username"> -->
+                        <!-- <input type="text" name="username" value="" placeholder="Username" class="form-control"> -->
                         {{ form.username }}
                         
                       </label>
@@ -58,7 +58,7 @@
                     <!-- LAST NAME -->
                     <li class="col-md-12">
                       <label> PASSWORD
-                        <!-- <input type="password" name="last-name" value="" placeholder="Password"> -->
+                        <!-- <input type="password" name="password" value="" placeholder="Password" class="form-control"> -->
                         {{ form.password }}
                         
                       </label>
@@ -140,4 +140,13 @@
       </div>
     </section>
     
+{% endblock %}
+
+
+
+{% block js %}
+
+<script type="text/javascript" src="{% static 'js/login.js' %}"></script>
+
+
 {% endblock %}

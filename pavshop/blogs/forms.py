@@ -57,7 +57,7 @@ class CreateStoryForm(forms.ModelForm):
                   'image', 
                   'is_archive', 
                   'content',
-                  'tag',
+                  'tag'
                 #   'slug',
         )
         # exclude = ('slug', 'is_archive', )
@@ -80,7 +80,7 @@ class CreateStoryForm(forms.ModelForm):
             'category' : forms.Select(attrs={
                 'class' : 'form-control'
             }),
-            'tag' : forms.Select(attrs={
+            'tag' : forms.SelectMultiple(attrs={
                 'class' : 'form-control'
             })
         }

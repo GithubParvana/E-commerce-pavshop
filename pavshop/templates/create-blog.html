@@ -8,93 +8,93 @@
 
 
 
-<!-- <h2>Create a Story</h2>
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ storyform.media }}
-    {{ storyform.title }}
-    {{ storyform.description }}
-    {{ storyform.category }}
-    {{ storyform.author }}
-    {{ storyform.content }}
-    {{ storyform.is_archive }}
-    {{ storyform.image }}
-    {{ storyform.slug }}
 
-
-    <li class="col-md-6">
-      <button type="submit" name="continue" class="btn">continue</button>
-    </li>
-
-</form> -->
 
 <!--======= USER  INFO  =========-->
 
   <section class="padding-top-100 padding-bottom-100">
     <div class="container">
-      {{form.media}}
+      <!-- {{form.media}} -->
  
         <div class="row" style="display: flex;justify-content: space-between;">
-          <div class="col-md-10">
+          <div class="col-md-8">
           <h4>Create a Story</h4>
-          <form method="POST" class="w-100" enctype="multipart/form-data">
-            {% csrf_token %}
+          <form method="POST" id="storyCreationForm" class="w-100" enctype="multipart/form-data">
+           
           
-              <div class="row w-100">
+            <div class="form-group">
+              <label for="">Title</label>
+              <input type="text" name="title" id="" class="form-control" value="">
+             
+              <!-- {{ form.title }}
+              {{ form.title.errors }} -->
 
-                <div class="col-sm-6">
-                 
-                  {{ form.title }}
-                  {{ form.title.errors }}
-  
-                </div>
-                
-                <div class="col-sm-6">
-                  {{ form.category }}
-                  {{ form.category.errors }}
-  
-                  
-                </div>
-
-
-                <div class="col-sm-6">
-                  {{ form.tag }}
-                  {{ form.tag.errors }}
-  
-                  
-                </div>
-                
-  </div>
-  <div class="row " style="margin-top: 30px;">
-    <div class=" col-sm-6">
-      {{ form.description }}
-      {{ form.description.errors }}
-      
-    </div>
-                <div class="col-sm-6">
-                  {{ form.image.label_tag }}
-                  {{ form.image }}
-                  {{ form.errors }}
-                
-                  
-                </div>
-                </div>
+            </div>
+            
+            <div class="form-group">
+              <select name="category" class="form-control">
               
-  
-                <div class="col-sm-12" style="margin: 20px 0;">
-  
-                  {{ form.is_archive }} Archive
-  
-                </div>
-  
-               
-                <div class="w-100">
-                  {{ form.content }}
-                  {{ form.content.errors }}
-                </div>
-                <div class="col-md-6" style="margin-top: 30px;">
-                  <button type="submit" name="continue" class="btn">continue</button>
-                </div>
+              </select>
+
+              <!-- {{ form.category }}
+              {{ form.category.errors }} -->
+
+            </div>
+
+
+            <div class="form-group">
+              <select name="tag" multiple id="" class="form-control">
+                
+              </select>
+
+              <!-- {{ form.tag }}
+              {{ form.tag.errors }} -->
+
+            </div>
+            
+          </div>
+          <div class="col-md-4 " style="margin-top: 30px;">
+            <div class="form-group">
+              <label for="">Description</label>
+              <input type="text" name="description" id="" class="form-control">
+              <!-- {{ form.description }}
+              {{ form.description.errors }} -->
+              
+            </div>
+            <div class="form-group">
+              <input type="file" name="image" id="" class="form-control">
+              <!-- {{ form.image.label_tag }}
+              {{ form.image }}
+              {{ form.errors }} -->
+            
+              
+            </div>
+            <div class="form-group" style="margin: 20px 0;display: flex; align-items: center;">
+              <input type="checkbox" id="" name="is_archive" class="">
+              <label for="" style="margin-left: 15px;margin-top: 5px;">Archive</label>
+
+              <!-- {{ form.is_archive }} Archive -->
+
+            </div>
+            <div class="form-group">
+              <label for="">Content</label>
+              <textarea name="content" class="form-control" id=""></textarea>
+              <!-- {{ form.content }}
+              {{ form.content.errors }} -->
+            </div>
+            <div class="col-md-12" style="margin-top: 30px;">
+              <button type="submit" name="continue" class="btn">continue</button>
+            </div>
+            </div>
+          
+
+            
+
+           
+            
+
+
+                
               
             </form>
             </div>
@@ -149,75 +149,14 @@
 
 
 
+{% endblock %}
 
 
 
+{% block js %}
 
-
-
-
-
-   <!-- <ul class="row">
-        <form class="padding-left-15" enctype="multipart/form-data" method="POST">
-            {% csrf_token %}
-
-            <li class="col-sm-4">
-                <label>Title
-                {{ storyform.title }}
-                
-                </label>
-            </li>
-
-            <li class="col-sm-4">
-                <label>Description
-                    {{ storyform.description }}
-
-                </label>
-            </li>
-
-            <li class="col-sm-4">
-                <label>Category
-                    {{ storyform.category }}
-
-                </label>
-            </li>
-
-            <li class="col-sm-4">
-                <label>Author
-                    {{ storyform.author }}
-
-                </label>
-            </li>
-
-            <li class="col-sm-4">
-                <label>Image
-                    {{ storyform.image }}
-
-                </label>
-            </li>
-
-            <li class="col-sm-4">
-                <label>Archive
-                    {{ storyform.is_archive }}
-
-                </label>
-            </li>
-
-            <li class="col-sm-4">
-                <label>Content
-                    {{ storyform.content }}
-
-                </label>
-            </li>
-            <li class="col-sm-12">
-                <button type="submit" class="btn margin-top-30">Add Story</button>
-            </li>
-
-        </form>
-
-    </ul>
-    
-     -->
+<script type="text/javascript" src="{% static 'js/create.js' %}"></script>
+<!-- <script type="text/javascript" src="{% static 'js/login.js' %}"></script> -->
 
 
 

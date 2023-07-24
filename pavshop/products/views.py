@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 import requests
 from django.db.models import Count, Q
 
@@ -26,6 +26,10 @@ User = get_user_model()
 # Generic Views importlar
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormMixin
+
+
+# Celery task importlar
+from products.tasks import export_data
 
 
 
@@ -72,6 +76,8 @@ class ProductListView(ListView):
         context["product_count"] = Category.objects.annotate(num_products=Count('products'))
         # context["product_count"] = Category.objects.all()  yaza bilerik, html'de .count ile sayi gostererik o zaman
         context["tags"] = Tag.objects.all()
+        context["top_rated"] = Product.objects.annotate(Count("reviews"))
+        context["rate_list"] = [i for i in context["top_rated"] if float(i.average_rating()) >= 3][:3]
         
         return context
         
@@ -122,6 +128,8 @@ class ProductDetailView(FormMixin, DetailView):
         context["comments_count"] = context["comments"].count()
         context["images"] = ProductImages.objects.filter(product__id=self.object.pk).all()
         context["form"] = ReviewForm
+        context["top_rated"] = Product.objects.annotate(Count("reviews"))
+        context["rate_list"] = [i for i in context["top_rated"] if float(i.average_rating()) >= 3][:3]
         return context
         
 
@@ -139,6 +147,7 @@ class ProductDetailView(FormMixin, DetailView):
     def form_valid(self, form):
         form.instance.product = self.object
         form.instance.author = self.request.user
+        # form.instance.rating = self.object
         form.save()
         return super().form_valid(form)
 
@@ -147,6 +156,13 @@ class ProductDetailView(FormMixin, DetailView):
 
     
     
+def export_view(request):
+    export_data.delay()
+    return HttpResponse('success')
+    
+
+
+
 
 
 
@@ -530,7 +546,5 @@ def product_detail_page(request, id):
     return render(request, 'product-detail.html', context=context)
 
 
-# Create your views here.
-# def index_page(request):
-#     return render(request, 'index.html')
+
 

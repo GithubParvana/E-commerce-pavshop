@@ -19,6 +19,8 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from blogs.models import Story
 
+from datetime import datetime, date
+
 
 
 # Genereic Views imports here
@@ -32,6 +34,20 @@ from django.utils.translation import gettext_lazy as _
 
 # Create your views here.
 def base_page(request):
+    # products = Product.objects.annotate(Count("reviews"))
+    # rate_list = []
+
+    # for i in products:
+    #     if float(i.average_rating()) >= 3:
+    #         rate_list.append(i)
+
+    # print(rate_list)
+
+    # context = {
+    #     'products' : products,
+    #     'rate_list' : rate_list
+    # }
+
     return render(request, "base.html")
 
 
@@ -109,7 +125,15 @@ class ContactView(CreateView):   # inherit alir CreateView'dan
                 from_email=settings.EMAIL_HOST_USER, 
                 recipient_list=["parvanayva@gmail.com", "pyva0055@gmail.com"], 
                 fail_silently=False,
-            )
+            ),
+        send_mail(
+            subject=self.request.POST.get('subject').split(),
+            message=f"Contact details:\n{Contact.objects.filter(created_at__month = datetime.today().month).last()}\n\n\nMessage detail: {self.request.POST.get('message')}",
+            from_email=self.request.user.email,
+            recipient_list=['parvanayva@gmail.com']
+            
+        
+        )
 
         return super().form_valid(form)
 
@@ -151,6 +175,8 @@ class AboutView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["teams"] = Team.objects.all()
         context["sponsors"] = Sponsor.objects.all()
+        context["top_rated"] = Product.objects.annotate(Count("reviews"))
+        context["rate_list"] = [i for i in context["top_rated"] if float(i.average_rating()) >= 3][:3]
         return context
     
 
@@ -181,6 +207,24 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["products"] = Product.objects.all()[:8]
         context["all_products"] = Product.objects.filter(money__gte=100).all()
+        # products = Product.objects.annotate(Count("reviews"))
+        context["top_rated"] = Product.objects.annotate(Count("reviews"))
+        context["rate_list"] = [i for i in context["top_rated"] if float(i.average_rating()) >= 3][:3]
+
         return context
+
+
+    # rate_list = []
+
+    # for i in products:
+    #     if float(i.average_rating()) >= 3:
+    #         rate_list.append(i)
+
+    # print(rate_list)
+
+    # context = {
+    #     'products' : products,
+    #     'rate_list' : rate_list
+    # }
      
 

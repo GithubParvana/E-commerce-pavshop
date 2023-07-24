@@ -9,14 +9,19 @@ from blogs.apis.views import (
      CommentCreateAPIView,
      CategoryCreateAPIView,
      StoryRetrieveUpdateDestroyAPIView,
-     CategoryRetrieveUpdateDestroyAPIView
+     CategoryRetrieveUpdateDestroyAPIView,
+     TagCreateAPIView,
+     TagRetrieveUpdateDestroyAPIView
      )
 
 
 urlpatterns = [
      # path('categories/', categories, name='categories'),
      path('categories/', CategoryCreateAPIView.as_view(), name='categories'),
-     path('tags/', tags, name='tags'),
+     # path('tags/', tags, name='tags'),
+     path('tags/', TagCreateAPIView.as_view(), name='tags'),
+     path('tags/<int:pk>/', TagRetrieveUpdateDestroyAPIView.as_view(), name='tags'),
+
      # path('stories/', stories, name='stories'),
      path('stories/', StoryCreateAPIView.as_view(), name='stories'),
      # path('comments/', comments, name='comments'),

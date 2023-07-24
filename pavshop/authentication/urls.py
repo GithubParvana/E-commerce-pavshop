@@ -1,7 +1,7 @@
 # this python module has been designed for app URLs. That is called informally URLconf;
 from django.urls import path, re_path, include
 
-from authentication.views import login_page, logout_page, success_page, register_page, profiles, activate, UserLoginView, RegisterView, UserLogoutView
+from authentication.views import login_page, logout_page, success_page, register_page, profiles, activate, UserLoginView, RegisterView, UserLogoutView, ProfileView
 from django.contrib.auth import views as auth_views
 
 
@@ -16,7 +16,9 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register_page'),
 
     path('register/success_page/',success_page, name='success_page'),
-    path('profile/', profiles, name='profiles'),
+    # path('profile/', profiles, name='profiles'),
+    path('profile/', ProfileView.as_view(), name='profiles'),
+
     re_path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,33})/$',
         activate, name='activate'),
     path('social-auth/', include('social_django.urls', namespace="social")),
