@@ -198,3 +198,5 @@ Geyim 2>, <Product: Geyim 1>, <Product: Mebel 2>, <Product: Geyim 3>, <Product: 
 
 >>> similar_products = Product.objects.filter(Q(category = product.category) & Q(brand__name = product.brand.name)).order_by('-updated_at')[:8]
 <MultilingualQuerySet [<Product: Sport 2>, <Product: Sport 1>]>
+
+
