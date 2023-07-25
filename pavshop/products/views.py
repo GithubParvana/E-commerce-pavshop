@@ -55,7 +55,7 @@ class ProductListView(ListView):
 
         if category:
             queryset = queryset.filter(category__name__icontains=category).all()
-        if color:
+        if color:   
             queryset = queryset.filter(property_values__name__icontains=color).all()
         if brand:
             queryset = queryset.filter(brand__name=brand).all()
