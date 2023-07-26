@@ -18,6 +18,29 @@ services:
     restart: unless-stopped
   
 
+  web:
+    container_name: pavshop
+    build: .
+    ports:
+      - 8002:8000
+    depends_on: 
+      - "postgres"
+      - "redis"
+      
+  
+
+  celery:
+    container_name: celery
+    command: celery -A pavshop worker
+    build: 
+      context: .
+      dockerfile: celery.dockerfile
+    depends_on: 
+      - "postgres"
+      - "redis"
+    env_file: .venv
+
+
   redis:
     image: redis
     restart: always
