@@ -4,10 +4,12 @@ services:
   postgres:
     container_name: pavshop_postgres_container
     image: postgres
+    env_file:
+      - .env
     environment:
-      POSTGRES_USER: pavshop_user
-      POSTGRES_PASSWORD: pavshop_password
-      POSTGRES_DB: shops_db
+      # POSTGRES_USER: pavshop_user
+      # POSTGRES_PASSWORD: pavshop_password
+      # POSTGRES_DB: shops_db_1
       PGDATA: /data/postgres
     volumes:
        - postgres:/data/postgres
@@ -21,24 +23,36 @@ services:
   web:
     container_name: pavshop
     build: .
+    restart: "always"
+    volumes:
+      - .:/code
+      - ./static/:/code/static/
+      - ./media/:/code/media/
     ports:
-      - 8002:8000
+      - "8000:8000"
     depends_on: 
       - "postgres"
       - "redis"
+    networks:
+      - "postgres"
+    env_file:
+      - .env
+      
+
+
       
   
 
   celery:
     container_name: celery
-    command: celery -A pavshop worker
+    command: celery -A pavshop worker --beat --scheduler django --loglevel=info
     build: 
       context: .
       dockerfile: celery.dockerfile
     depends_on: 
       - "postgres"
       - "redis"
-    env_file: .venv
+    env_file: .env
 
 
   redis:
@@ -51,6 +65,10 @@ services:
 networks:
   postgres:
     driver: bridge
+  default:
+        external:
+            name: nginx-proxy
+
 
 volumes:
     postgres:

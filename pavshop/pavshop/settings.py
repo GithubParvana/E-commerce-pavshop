@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+# import mimetypes
+# mimetypes.add_type("text/css", ".css", True)
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,12 +24,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#7hijxnh@3n7^hgn2@@&f5a1z3fd$ngq@^u34#627-1yp%tioj'
+# SECRET_KEY = 'django-insecure-#7hijxnh@3n7^hgn2@@&f5a1z3fd$ngq@^u34#627-1yp%tioj'
+SECRET_KEY = os.environ.get("SECRET_KEY", "r0^-58thj4$@ue$1dm!&m#%a0ms=d9&!vil%xxn$fdft*axqe!")
+
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False if os.environ.get('DEBUG') else True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -62,6 +67,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'drf_spectacular',
     'django_celery_beat',
+    'corsheaders',
 
     
     
@@ -69,12 +75,13 @@ INSTALLED_APPS = [
 
 
 
-
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -95,7 +102,7 @@ ROOT_URLCONF = 'pavshop.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -173,11 +180,11 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'shops_db',
-        'USER': 'pavshop_user',
-        'PASSWORD': 'pavshop_password',
-        'HOST': 'postgres',
-        'PORT': '5432',
+        'NAME': os.environ.get('POSTGRES_DB', 'shops_db_1'),
+        'USER': os.environ.get('POSTGRES_USER', 'pavshop_user'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'pavshop_password'),
+        'HOST': os.environ.get('POSTGRES_HOST', '167.172.178.111'),
+        'PORT': os.environ.get('POSTGRES_PORT', 5432),
     }
     
 
@@ -236,10 +243,13 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+if DEBUG:
+    STATICFILES_DIRS = [
+        BASE_DIR, 'static/'
+    ]
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-STATICFILES_DIRS = [
-    BASE_DIR, "static/",
-]
 
 
 # STATIC_ROOT -  the absolute path to the directory where "collectstatic" will collect static files for deployment
@@ -362,5 +372,9 @@ EMAIL_PORT = 587   # gmail portu 587-dir
 
 
 # Celery settings
-CELERY_BROKER_URL = "redis://redis:6379"
-CELERY_RESULT_BACKEND = "redis://redis:6379"
+CELERY_BROKER_URL = f"redis://{os.environ.get('REDIS_HOST', 'localhost')}:6379"
+CELERY_RESULT_BACKEND = f"redis://{os.environ.get('REDIS_HOST', 'localhost')}:6379"
+
+
+
+CSRF_TRUSTED_ORIGINS=['http://*.pavshop-styles.tech', 'http://pavshop-styles.tech']
