@@ -66,8 +66,8 @@ networks:
   postgres:
     driver: bridge
   default:
-        external:
-            name: nginx-proxy
+      external:
+          name: nginx-proxy
 
 
 volumes:
