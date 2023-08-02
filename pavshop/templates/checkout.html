@@ -343,25 +343,25 @@
 <script type="text/javascript">
   // var total = '{{order.get_grand_total}}'
 
-  // var shipForm = document.getElementById('ship-form')
-  // var billForm = document.getElementById('bill-form')
+  var shipForm = document.getElementById('ship-form')
+  var billForm = document.getElementById('bill-form')
 
-  // var token = localStorage.getItem('token')
+  var token = localStorage.getItem('token')
 
-  // shipForm.addEventListener('submit', function(e){
-  //   // e.preventDefault()
-  //   console.log('Ship form submitted ...')
-  //   // document.getElementById('shipform-button').classList.add('hidden')
-  //   // document.getElementById('payment-info').classList.remove('hidden')
+  shipForm.addEventListener('submit', function(e){
+    // e.preventDefault()
+    console.log('Ship form submitted ...')
+    // document.getElementById('shipform-button').classList.add('hidden')
+    // document.getElementById('payment-info').classList.remove('hidden')
 
-  // }),
-  // billForm.addEventListener('submit', function(e){
-  //   // e.preventDefault()
-  //   console.log('Bill form submitted...')
-  //   // document.getElementById('billform-button').classList.add('hidden')
-  //   // document.getElementById('payment-info').classList.remove('hidden')
+  }),
+  billForm.addEventListener('submit', function(e){
+    // e.preventDefault()
+    console.log('Bill form submitted...')
+    // document.getElementById('billform-button').classList.add('hidden')
+    // document.getElementById('payment-info').classList.remove('hidden')
 
-  // })
+  })
 
   
 /*  
@@ -370,7 +370,6 @@
     submitFormData()
    })
 */
-
 
   function submitFormData(){
     console.log('Payment button clicked')
