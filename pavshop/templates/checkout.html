@@ -381,7 +381,9 @@
     }
     
 
-    var  url = 'http://127.0.0.1:8000/en/process_order/'
+    // var  url = 'http://127.0.0.1:8000/en/process_order/'
+    var  url = `${location.origin}/en/process_order/`
+
 
     fetch(url, {
       method : 'POST',
