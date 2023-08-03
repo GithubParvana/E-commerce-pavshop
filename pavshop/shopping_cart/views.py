@@ -120,7 +120,7 @@ def checkout_page(request):
     
     form = Shipping_addressForm()
     if request.method == "POST" and 'submit' in request.POST:
-        print(form, "form is here")
+        # print(form, "form is here")
         form = Shipping_addressForm(data=request.POST)
         print('form sent !!!!!!')
         if form.is_valid():
@@ -138,7 +138,7 @@ def checkout_page(request):
 
     form = Billing_addressForm()
     if request.method == "POST" and 'continue' in request.POST:
-        print(form, "form is here")
+        # print(form, "form is here")
         form = Billing_addressForm(data=request.POST)
         print('form sent !!!!')
         if form.is_valid():
