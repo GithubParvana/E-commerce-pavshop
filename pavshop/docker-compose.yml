@@ -7,9 +7,9 @@ services:
     env_file:
       - .env
     environment:
-      POSTGRES_USER: pavshop_user
-      POSTGRES_PASSWORD: pavshop_password
-      POSTGRES_DB: shops_db_1
+      # POSTGRES_USER: pavshop_user
+      # POSTGRES_PASSWORD: pavshop_password
+      # POSTGRES_DB: shops_db_1
       PGDATA: /data/postgres
     volumes:
        - postgres:/data/postgres
